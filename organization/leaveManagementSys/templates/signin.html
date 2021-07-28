@@ -2,7 +2,8 @@
 
 {% block content %}
 <main class="form-signin">
-    <form action="/home" method="POST" class="row g-3 needs-validation form-signin " novalidate>
+    <form action="{% url 'lms-signin' %}" method="POST" class="row g-3 needs-validation form-signin " novalidate>
+        {% csrf_token %}
         <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" class="bi bi-file-person"
             viewBox="0 0 16 16">
             <path

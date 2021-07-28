@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee detailed home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
+        integrity="sha512-usVBAd66/NpVNfBge19gws2j6JZinnca12rAe2l+d+QkLU9fiG02O1X8Q6hepIpr/EYKZvKx/I9WsnujJuOmBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    {{ detail_data.reason }}
+    {{ detail_data.applied_user }}
+    {{ detail_data.applied_date }}
+    {{ detail_data.eligible_leave }}
+    {{ detail_data.status }}
+    {{ detail_data.approved_leave }}
+    {{ detail_data.rejected_leave }}
+
+    <form action="{% url 'employee-home' detail_data.id %}" method="POST" class="row g-3 needs-validation form-signin "
+        novalidate>
+        {% csrf_token %}
+        <div class="form-floating">
+            <input type="text" name="reason" class="form-control" id="floatingInput validationCustom03"
+                placeholder="Reason For Leave" required>
+            <label for="floatingInput">Reason For Leave</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="number" name="leave_count" class="form-control" id="floatingPassword validationCustom04"
+                placeholder="Days Requested" min="1" max="{{ detail_data.eligible_leave }}" required>
+            <label for="floatingPassword">Days Requested</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-secondary" type="submit">Submit</button>
+    </form>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"
+    integrity="sha512-a6ctI6w1kg3J4dSjknHj3aWLEbjitAXAjLDRUxo2wyYmDFRcz2RJuQr5M3Kt8O/TtUSp8n2rAyaXYy1sjoKmrQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+</html>

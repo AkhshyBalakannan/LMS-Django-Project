@@ -18,39 +18,56 @@
     <link rel="stylesheet" href="{% static 'css/signin.css' %}">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
+<style>
+    .card {
+        margin: 5% 30%;
+        width: 40%;
+    }
 
+    .signup-card {
+        margin: 5% 25%;
+        width: 50%;
+    }
+
+    .leave-card {
+        width: 100%;
+    }
+</style>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
-            <a href="/home" class="navbar-brand"><i class="fas fa-code me-2"></i>ABC ORGANIZATIONS</a>
-            <button class="navbar-toggler" data-bs-target="#my-nav" data-bs-toggle="collapse" aria-controls="my-nav"
-                aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">ABC ORGANIZATIONS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="my-nav" class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item active">
                         <a href="{% url 'lms-home' %}" class="nav-link"></i>Home</a>
                     </li>
                     <li class="nav-item active">
+                        <a href="{% url 'profile' %}" class="nav-link"></i>Profile</a>
+                    </li>
+                    <li class="nav-item active">
                         <a href="#" class="nav-link"></i>About</a>
                     </li>
-
                     <li class="nav-item active">
                         <a href="#" class="nav-link"></i>Contact</a>
                     </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item active">
-                        <a href="{% url 'logout' %}" class="nav-link">Log Out</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item active">
-                        <a href="{% url 'login' %}" class="nav-link">Log In</a>
-                    </li>
-                    {% endif %}
-
                 </ul>
+                {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" class="d-flex">
+                    <button class="btn btn-outline-success" type="submit">logout</button>
+                </form>
+                {% else %}
+                <form action="{% url 'login' %}" class="d-flex">
+                    <button class="btn btn-outline-success" type="submit">Login</button>
+                </form>
+                {% endif %}
+
             </div>
         </div>
     </nav>
