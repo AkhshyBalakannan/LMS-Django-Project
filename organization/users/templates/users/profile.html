@@ -1,69 +1,85 @@
 {% extends 'base\base.html' %}
-{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<!-- <h1>{{ user.username }}</h1> -->
-{% for d in eligible_leave %}
-{{ d.eligible_leave }}
-{% endfor %}
-
-<div class="card" style="width: 30rem;">
-    <div class="card-body">
-        <h5 class="card-title mx-3">To Apply for Leave</h5>
-        <h6 class="card-subtitle mx-3 mb-2 text-muted">Fill in details</h6>
-        <div class="card-text">
-            <form action="{% url 'employee-home' user.id %}" method="POST" class="row g-3 needs-validation form-signin "
-                novalidate>
-                {% csrf_token %}
-                <div class="form-floating">
-                    <input type="text" name="reason" class="form-control" id="floatingInput validationCustom03"
-                        placeholder="Reason For Leave" required>
-                    <label for="floatingInput">Reason For Leave</label>
+<div class="container">
+    <ul class="list-group list-group-horizontal-xxl mb-3">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">Employee Name:</div>
+                <div class="col">{{ user }}</div>
+            </div>
+            <div class="row">
+                <div class="col">Email Id:</div>
+                <div class="col">{{ user.email }}</div>
+            </div>
+            {% if user.is_employee %}
+            <div class="row">
+                <div class="col">Designation:</div>
+                <div class="col">Employee</div>
+            </div>
+            {% else %}
+            <div class="row">
+                <div class="col">Designation:</div>
+                <div class="col">Manager</div>
+            </div>
+            {% endif %}
+        </li>
+    </ul>
+    <ul class="list-group list-group-horizontal-xxl mb-2">
+        <li class="list-group-item">
+            <div>
+                <p class="my-1"> <b>Leave Summary</b> </p>
+                <hr class="my-1">
+                <div class="row my-1">
+                    <div class=" col"><b>Leave type</b></div>
+                    <div class="col"><b>Leave Eligible</b></div>
+                    <div class="col"><b>Leave Taken</b></div>
+                    <div class="col"><b>Leave Remaining</b></div>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="number" name="leave_count" class="form-control"
-                        id="floatingPassword validationCustom04" placeholder="Days Requested" min="1"
-                        max="{{ data.eligible_leave }}" required>
-                    <label for="floatingPassword">Days Requested</label>
+                <hr class="my-1">
+                <div class="row">
+                    <div class="col">Presonal Leave</div>
+                    <div class="col">{{ user.leave_eligible }}</div>
+                    <div class="col">{{ user.leave_taken }}</div>
+                    <div class="col">{{ user.leave_remaining }}</div>
                 </div>
-                <button class="w-100 btn btn-lg btn-secondary" type="submit">Submit</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<h2>Leave Taken History</h2>
-{% for d in data %}
-<div class="card" style="width: 20rem;">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b>Reason:</b> {{ d.reason }}</li>
-        <li class="list-group-item"><b>Applied date:</b> {{ d.applied_date }}</li>
-        <li class="list-group-item"><b>status:</b> {{ d.status }}</li>
+                <div class="row">
+                    <div class="col">LOP Leave</div>
+                    <div class="col">0</div>
+                    <div class="col">{{ user.lop_leave_taken }}</div>
+                    <div class="col">0</div>
+                </div>
+                <div class="row">
+                    <div class="col">Covid Support</div>
+                    <div class="col">0</div>
+                    <div class="col">{{ user.covid_leave_taken }}</div>
+                    <div class="col">0</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <ul class="list-group list-group-horizontal-xxl mb-2">
+        <li class="list-group-item">
+            <div>
+                <p class="my-1"> <b>Leave Details</b> </p>
+                <hr class="my-1">
+                <div class="row mb-1">
+                    <div class="col"><b>From Date</b></div>
+                    <div class="col"><b>To Date</b></div>
+                    <div class="col"><b>Number of Days</b></div>
+                    <div class="col"><b>Leave Type</b></div>
+                    <div class="col mx-5"><b>Descriptions</b></div>
+                </div>
+                <hr class="my-1">
+                <div class="row">
+                    <div class="col">Presonal Leave</div>
+                    <div class="col">LOP Leave</div>
+                    <div class="col">Covid Support</div>
+                    <div class="col">Covid Support</div>
+                    <div class="col mx-5">Covid Support</div>
+                </div>
+            </div>
+        </li>
     </ul>
 </div>
-{{ d.eligible_leave }}
-{{ d.approved_leave }}
-{{ d.rejected_leave }}
-{% endfor %}
-
-<script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
-        'use strict'
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
-</script>
 {% endblock content %}

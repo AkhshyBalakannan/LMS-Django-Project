@@ -1,50 +1,53 @@
-from django.contrib.auth.models import User
-from django.http.response import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render
-from .models import LeaveRequest
-from django.views import View
+import leavemanagementsys
+from leavemanagementsys.models import LeaveRequest
+from django.shortcuts import render
+from .forms import RequestLeaveForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http.response import HttpResponseRedirect
 from django.urls import reverse
+from .models import CustomUser
 
 
-class Home(View):
-    def get(self, request):
-        return render(request, 'home.html', {'title': 'ABC HOME'})
+@login_required
+def request_leave(request):
+    if request.method == 'POST':
+        form = request.POST
+        from_date = form.get('fromdate')
+        to_date = form.get('todate')
+        leave_type = form.get('leavetype')
+        description = form.get('description')
+        number_of_days = form.get('numofdays')
+        leave_request = LeaveRequest.objects.create(applied_user=request.user,
+                                                    description=description, from_date=from_date, to_date=to_date, leave_type=leave_type, number_of_days=number_of_days)
+        leave_request.save()
+        logged_user = request.user
+        logged_user.leave_taken += int(number_of_days)
+        if logged_user.leave_remaining < 0:
+            logged_user.lop_leave_taken += int(number_of_days)
+        logged_user.save()
+        messages.success(
+            request, f'Leave Request Successfully submitted for {description}!')
+        return HttpResponseRedirect(reverse('home'))
+    else:
+        return render(request, 'lms/requestLeave.html')
 
 
-class Signin(View):
-    def get(self, request):
-        return render(request, 'signin.html', {'title': 'Sign in'})
+@login_required
+def cancel_request(request):
+    if request.method == 'GET':
+        pk = request.user.id
+        print(pk)
+        logged_user = CustomUser.objects.get(pk=pk)
+        print(logged_user)
+        logged_user.objects.LeaveRequest.all()
+        print(logged_user)
+    elif request.method == 'POST':
+        form = request.POST
 
-    def post(self, request):
-        user = request.POST['userid']
-        print(user)
-        valid = get_object_or_404(User, username=user)
-        if valid:
-            return HttpResponseRedirect(reverse('employee-home', args=(valid.id,)))
-
-        else:
-            return Http404
-
-
-class Employee(View):
-    def get(self, request, pk):
-        data = get_object_or_404(LeaveRequest, pk=pk)
-        return render(request, 'employee_home.html', {'detail_data': data})
-
-    def post(self, request, pk):
-        leave = request.POST['reason']
-        user = User.objects.filter(id=pk)
-        leaverequest = LeaveRequest.objects.create(
-            reason=leave, applied_user=User.objects.filter(id=pk),)
-        leaverequest.save()
-        return HttpResponseRedirect(reverse('employee-home', args=(pk,)))
-
-
-def list_lms_admin(request):
-    list_data = {'details': LeaveRequest.objects.all()}
-    return render(request, 'admin_list.html', list_data)
-
-
-def detailed_lms_admin(request, pk):
-    detail_data = get_object_or_404(LeaveRequest, pk=pk)
-    return render(request, 'admin_detail.html', {'detail_data': detail_data, })
+        description = form.get('description')
+        messages.success(
+            request, f'Leave Request Successfully cancelled for {description}!')
+        return HttpResponseRedirect(reverse('home'))
+    else:
+        return render(request, 'lms/requestLeave.html')

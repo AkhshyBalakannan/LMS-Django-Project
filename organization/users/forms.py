@@ -1,3 +1,4 @@
+from users.models import CustomUser
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -8,5 +9,7 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        model = CustomUser
+        fields = ['username', 'email', 'password1', 'password2', 'is_employee', 'is_manager', 'leave_eligible',
+                  'leave_taken', 'leave_remaining', 'lop_leave_taken',
+                  'covid_leave_taken']
