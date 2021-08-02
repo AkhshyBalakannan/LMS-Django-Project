@@ -63,21 +63,37 @@
             <div>
                 <p class="my-1"> <b>Leave Details</b> </p>
                 <hr class="my-1">
+                {% if not datas %}
+                <div class="row">
+                    <div class="align-items-center">No Leaves were taken</div>
+                </div>
+                {% else %}
                 <div class="row mb-1">
                     <div class="col"><b>From Date</b></div>
                     <div class="col"><b>To Date</b></div>
                     <div class="col"><b>Number of Days</b></div>
                     <div class="col"><b>Leave Type</b></div>
-                    <div class="col mx-5"><b>Descriptions</b></div>
+                    <div class="col"><b>Descriptions</b></div>
+                    <div class="col"><b>Status</b></div>
+                    <div class="col"><b>Remark</b></div>
                 </div>
+                {% for data in datas %}
                 <hr class="my-1">
                 <div class="row">
-                    <div class="col">Presonal Leave</div>
-                    <div class="col">LOP Leave</div>
-                    <div class="col">Covid Support</div>
-                    <div class="col">Covid Support</div>
-                    <div class="col mx-5">Covid Support</div>
+                    <div class="col">{{ data.from_date }}</div>
+                    <div class="col">{{ data.to_date }}</div>
+                    <div class="col">{{ data.number_of_days }}</div>
+                    <div class="col">{{ data.leave_type }}</div>
+                    <div class="col">{{ data.description }}</div>
+                    <div class="col">{{ data.status }}</div>
+                    {% if data.status == "Reject" or data.status == "Approved" %}
+                    <div class="col">{{ data.remark }}</div>
+                    {% else %}
+                    <div class="col">Leave Not Responded</div>
+                    {% endif %}
                 </div>
+                {% endfor %}
+                {% endif %}
             </div>
         </li>
     </ul>

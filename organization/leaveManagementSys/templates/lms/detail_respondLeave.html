@@ -1,0 +1,80 @@
+{% extends 'base\base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_manager %}
+<ul class="list-group list-group-horizontal-xxl mb-3">
+    <li class="list-group-item">
+        <div>
+            <p class="my-1"> <b>Leave Details</b> </p>
+            <hr class="my-1">
+            {% if not data %}
+            <div class="row">
+                <div class="align-items-center">No Leaves request</div>
+            </div>
+            {% else %}
+            <div class="row mb-1">
+                <div class="col"><b>Employee Name</b></div>
+                <div class="col"><b>Number of Days</b></div>
+                <div class="col"><b>Leave Type</b></div>
+                <div class="col"><b>Descriptions</b></div>
+                <div class="col"><b>Action</b></div>
+                <div class="col"><b>Remark</b></div>
+
+            </div>
+
+            <hr class="my-1">
+            <div class="row">
+                <div class="col">{{ data.applied_user }}</a></div>
+                <div class="col">{{ data.number_of_days }}</div>
+                <div class="col">{{ data.leave_type }}</div>
+                <div class="col">{{ data.description }}</div>
+                {% if data.status == "Approved" %}
+                <div class="col">Leave Approved</div>
+                {% elif data.status == "Cancel" %}
+                <div class="col">Leave Cancelled</div>
+                {% elif data.status == "Rejected" %}
+                <div class="col">Leave Rejected</div>
+                {% else %}
+                <div class="col">Pending</div>
+                {% endif %}
+                <div class="col">{{ data.remark }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </li>
+</ul>
+<ul class="list-group list-group-horizontal-xxl mb-2">
+    <li class="list-group-item">
+        <form action="{% url 'update-leave-respond' data.id %}" method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <label for="remark" class="form-label"><b>Leave Remark</b></label>
+                    <input type="text" class="form-control" name="remark" id="remark" placeholder="NIL" required>
+                </div>
+                <div class="col">
+                    <label for="status" class="form-label"><b>Leave Status</b></label>
+                    <select name="status" class="form-control">
+                        <option {% ifequal data.status "Pending" %} selected {% endifequal %} value="Pending">Pending
+                        </option>
+                        <option {% ifequal data.status "Approved" %} selected {% endifequal %} value="Approved">Approved
+                        </option>
+                        <option {% ifequal data.status "Reject" %} selected {% endifequal %} value="Reject">Reject
+                        </option>
+                        <option {% ifequal data.status "Cancel" %} selected {% endifequal %} disabled>Cancelled</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-12 mt-5"> <button type="submit" class="btn btn-success">Submit Response</button>
+                    <button type="reset" class="btn btn-primary">Reset Response</button>
+                    <a href="{% url 'list-leave-respond' %}"><input type="button" class="btn btn-outline-dark"
+                            value="Back"></a>
+                </div>
+            </div>
+        </form>
+    </li>
+</ul>
+{% endif %}
+{% endblock content %}

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from leavemanagementsys.models import LeaveRequest
 
 
 @login_required
@@ -32,4 +33,6 @@ def home(request):
 @login_required
 def profile(request):
     logged_user = request.user
-    return render(request, 'users/profile.html', {'user': logged_user})
+    data = LeaveRequest.objects.filter(
+        applied_user=request.user).order_by('-from_date')
+    return render(request, 'users/profile.html', {'user': logged_user, 'datas': data})

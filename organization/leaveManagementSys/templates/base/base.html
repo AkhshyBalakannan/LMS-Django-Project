@@ -47,7 +47,6 @@
                             Leave
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% if user.is_emmployee %}
                             <li><a class="dropdown-item" href="{% url 'profile' %}">View My Leave</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -55,16 +54,15 @@
                             <li><a class="dropdown-item" href="{% url 'leave-request' %}">Request Leave</a></li>
                             <li>
                                 <hr class="dropdown-divider">
-                                {% endif %}
+
                                 {% if user.is_manager %}
-                            <li><a class="dropdown-item" href="#">Respond Leave Request</a></li>
+                            <li><a class="dropdown-item" href="{% url 'list-leave-respond' %}">Respond Leave Request</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                                 {% endif %}
-                                {% if user.is_emmployee %}
                             </li>
                             <li><a class="dropdown-item" href="{% url 'cancel-request' %}">Cancel Leave</a></li>
-                            {% endif %}
                         </ul>
                     </li>
                     <li class="nav-item active">

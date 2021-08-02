@@ -58,7 +58,8 @@
                             <li>
                                 <hr class="dropdown-divider">
                                 {% if user.is_manager %}
-                            <li><a class="dropdown-item" href="#">Respond Leave Request</a></li>
+                            <li><a class="dropdown-item" href="{% url 'list-leave-respond' %}">Respond Leave Request</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                                 {% endif %}
