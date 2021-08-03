@@ -9,7 +9,9 @@ from leavemanagementsys.models import LeaveRequest
 
 @login_required
 def register(request):
-    if request.user.is_manager:
+    '''This is the signup page where 
+    manager can create account for the new joinies'''
+    if request.user.username == "admin":
         if request.method == 'POST':
             form = UserRegisterForm(request.POST)
             if form.is_valid():
@@ -26,13 +28,14 @@ def register(request):
 
 @login_required
 def home(request):
-    logged_user = request.user
-    return render(request, 'users/home.html', {'user': logged_user})
+    '''simple function to render the home page of LMS'''
+    return render(request, 'users/home.html')
 
 
 @login_required
 def profile(request):
-    logged_user = request.user
+    '''simple function to render the profile page of LMS
+    the leave list is printed in desc order of dates'''
     data = LeaveRequest.objects.filter(
         applied_user=request.user).order_by('-from_date')
-    return render(request, 'users/profile.html', {'user': logged_user, 'datas': data})
+    return render(request, 'users/profile.html', {'datas': data})

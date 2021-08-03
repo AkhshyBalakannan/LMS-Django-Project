@@ -1,0 +1,19 @@
+User Creations 
+
+ADMIN TO CREATE ACCOUNTS
+user name:	admin
+password:	useradmin
+
+
+MANAGER
+user name:	akhshy
+password:	userakhshy
+
+
+EMPLOYEE
+user name:	ashwin
+password:	userashwin
+
+EMPLOYEE
+user name:	ananthi
+password:	userananthi

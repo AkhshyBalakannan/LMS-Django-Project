@@ -20,6 +20,6 @@ urlpatterns = [
          login_required(lms_views.LeaveRequestUpdate.as_view()),
          name='update-leave-respond'),
     path('logout/', auth_views.LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
-    path('register/', user_views.register, name='register-employee'),
+    path('register/', user_views.register, name='register-user'),
     path('admin/', admin.site.urls),
 ]

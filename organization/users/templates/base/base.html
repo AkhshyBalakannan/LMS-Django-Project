@@ -11,29 +11,26 @@
     {% else %}
     <title>LMS</title>
     {% endif %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
         integrity="sha512-usVBAd66/NpVNfBge19gws2j6JZinnca12rAe2l+d+QkLU9fiG02O1X8Q6hepIpr/EYKZvKx/I9WsnujJuOmBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- <link rel="stylesheet" href="{% static 'css/signin.css' %}">
-    <link rel="stylesheet" href="{% static 'css/home.css' %}"> -->
-    <link href="{% static 'fontawesome_free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
-<style>
-    .signup-card {
-        margin: 5% 25%;
-        width: 50%;
-    }
-
-    .leave-card {
-        width: 100%;
-    }
-</style>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="#">ABC ORGANIZATIONS</a>
+            <form action="{% url 'home' %}" class="d-flex">
+                <a href="#" class="h2 bg-light mt-0 mb-0" style="text-decoration: none;">Leave Management System</a>
+            </form>
+        </div>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
+        <div class="container">
+            <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -72,10 +69,17 @@
                     <li class="nav-item active">
                         <a href="#" class="nav-link"></i>Release Notes</a>
                     </li>
+                    {% ifequal user.username "admin" %}
+                    <li class="nav-item active">
+                        <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
+                    </li>
+                    {% endifequal %}
                 </ul>
                 <form action="{% url 'logout' %}" class="d-flex">
-                    <small style="color: white; padding: 0.5rem;">Welcome <b>{{ user.username|upper }}</b></small>
-                    <button class="btn btn-outline-success" type="submit">logout</button>
+                    <small style="padding: 0.5rem;">Welcome
+                        <b>{{ user.first_name|upper }}.{{ user.last_name|upper }}</b>
+                    </small>
+                    <button class="btn btn-outline-dark" type="submit">logout</button>
                 </form>
             </div>
         </div>
@@ -90,29 +94,15 @@
         {% block content %}
         {% endblock content %}
     </div>
-    <script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"
-        integrity="sha512-a6ctI6w1kg3J4dSjknHj3aWLEbjitAXAjLDRUxo2wyYmDFRcz2RJuQr5M3Kt8O/TtUSp8n2rAyaXYy1sjoKmrQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict'
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.querySelectorAll('.needs-validation')
-            // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
 </body>
+
+<footer>
+    &copy; ABC Organizations <em id="date"></em>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"
+    integrity="sha512-a6ctI6w1kg3J4dSjknHj3aWLEbjitAXAjLDRUxo2wyYmDFRcz2RJuQr5M3Kt8O/TtUSp8n2rAyaXYy1sjoKmrQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{% static 'js/copyrights.js' %}"></script>
+<script src="{% static 'js/formvalidation.js' %}"></script>
 
 </html>

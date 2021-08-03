@@ -6,21 +6,23 @@
         <li class="list-group-item">
             <div class="row">
                 <div class="col">Employee Name:</div>
-                <div class="col">{{ user }}</div>
+                <div class="col">
+                    {{ user.first_name }} {{ user.last_name }}
+                </div>
             </div>
             <div class="row">
                 <div class="col">Email Id:</div>
                 <div class="col">{{ user.email }}</div>
             </div>
-            {% if user.is_employee %}
+            {% if user.is_manager %}
             <div class="row">
                 <div class="col">Designation:</div>
-                <div class="col">Employee</div>
+                <div class="col">Manager</div>
             </div>
             {% else %}
             <div class="row">
                 <div class="col">Designation:</div>
-                <div class="col">Manager</div>
+                <div class="col">Employee</div>
             </div>
             {% endif %}
         </li>
@@ -75,7 +77,9 @@
                     <div class="col"><b>Leave Type</b></div>
                     <div class="col"><b>Descriptions</b></div>
                     <div class="col"><b>Status</b></div>
+                    {% if not user.is_manager %}
                     <div class="col"><b>Remark</b></div>
+                    {% endif %}
                 </div>
                 {% for data in datas %}
                 <hr class="my-1">
@@ -86,10 +90,12 @@
                     <div class="col">{{ data.leave_type }}</div>
                     <div class="col">{{ data.description }}</div>
                     <div class="col">{{ data.status }}</div>
+                    {% if not user.is_manager %}
                     {% if data.status == "Reject" or data.status == "Approved" %}
                     <div class="col">{{ data.remark }}</div>
                     {% else %}
                     <div class="col">Leave Not Responded</div>
+                    {% endif %}
                     {% endif %}
                 </div>
                 {% endfor %}

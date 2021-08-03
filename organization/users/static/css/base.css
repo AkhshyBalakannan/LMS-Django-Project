@@ -1,0 +1,25 @@
+.signup-card {
+    margin: 5% 25%;
+    width: 50%;
+}
+
+.leave-card {
+    width: 100%;
+}
+
+body::-webkit-scrollbar {
+    width: 7.5px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #838383;
+}
+
+footer {
+    margin: 30px auto;
+    text-align: center;
+}
