@@ -10,8 +10,8 @@ from users.models import CustomUser
 class LeaveRequest(models.Model):
     applied_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField()
-    from_date = models.DateField(unique=True, default=timezone.now)
-    to_date = models.DateField(unique=True, default=timezone.now)
+    from_date = models.DateField(default=timezone.now)
+    to_date = models.DateField(default=timezone.now)
     leave_type = models.CharField(max_length=10, default='Personal',)
     number_of_days = models.IntegerField()
     status = models.CharField(max_length=10, default='Pending',)

@@ -1,3 +1,4 @@
+from django.db.models.fields import IntegerField
 from django.urls.base import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import UpdateView
@@ -10,6 +11,9 @@ from django.urls import reverse
 from django.views.generic.list import ListView
 from users.models import CustomUser
 from django.db import IntegrityError
+# import pandas as pd
+# df = pd.DataFrame()
+# print(df[from_date].dt.year)
 
 
 @login_required
@@ -24,18 +28,18 @@ def request_leave(request):
         description = form.get('description')
         number_of_days = form.get('numofdays')
         try:
-            leave_request = LeaveRequest.objects.create(applied_user=request.user,
-                                                        description=description, from_date=from_date, to_date=to_date, leave_type=leave_type, number_of_days=number_of_days)
-        except IntegrityError:
-            messages.warning(
-                request, f'Leave Request For the day already exists')
-            return HttpResponseRedirect(reverse('home'))
-        else:
+            year, month, day = map(int, from_date.split('-'))
+            leave_dates = LeaveRequest.objects.filter(
+                applied_user=request.user)
+            for date in leave_dates:
+                if date.from_date.year == year and date.from_date.month == month and date.from_date.day == day:
+                    raise IntegrityError
+            LeaveRequest.objects.create(applied_user=request.user,
+                                        description=description, from_date=from_date, to_date=to_date, leave_type=leave_type, number_of_days=number_of_days)
             if request.user.is_manager:
                 ''' Updates all entry as approved if its manager'''
-                leave_request = LeaveRequest.objects.update(status="Approved")
+                LeaveRequest.objects.update(status="Approved")
             logged_user = request.user
-            leave_request.save()
             logged_user.leave_taken += int(number_of_days)
             logged_user.leave_remaining -= int(number_of_days)
             if logged_user.leave_remaining < 0:
@@ -45,6 +49,11 @@ def request_leave(request):
             logged_user.save()
             messages.success(
                 request, f'Leave Request Successfully submitted !')
+            return HttpResponseRedirect(reverse('home'))
+
+        except IntegrityError:
+            messages.warning(
+                request, f'Leave Request For the day already exists')
             return HttpResponseRedirect(reverse('home'))
 
     else:

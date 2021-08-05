@@ -18,9 +18,8 @@
                 <div class="col"><b>Number of Days</b></div>
                 <div class="col"><b>Leave Type</b></div>
                 <div class="col"><b>Descriptions</b></div>
+                <div class="col"><b>Manager Remark</b></div>
                 <div class="col"><b>Status</b></div>
-                <div class="col"><b>Actions</b></div>
-
             </div>
             {% for data in datas %}
             <hr class="my-1">
@@ -30,7 +29,7 @@
                 <div class="col">{{ data.number_of_days }}</div>
                 <div class="col">{{ data.leave_type }}</div>
                 <div class="col">{{ data.description }}</div>
-                <div class="col">{{ data.status }}</div>
+                <div class="col">{{ data.remark }}</div>
                 {% if data.status == "Approved" %}
                 <div class="col">
                     Leave Approved

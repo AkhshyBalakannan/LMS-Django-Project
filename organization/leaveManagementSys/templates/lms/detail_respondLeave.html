@@ -15,17 +15,19 @@
             {% else %}
             <div class="row mb-1">
                 <div class="col"><b>Employee Name</b></div>
+                <div class="col"><b>From Date</b></div>
+                <div class="col"><b>To Date</b></div>
                 <div class="col"><b>Number of Days</b></div>
                 <div class="col"><b>Leave Type</b></div>
                 <div class="col"><b>Descriptions</b></div>
                 <div class="col"><b>Action</b></div>
-                <div class="col"><b>Remark</b></div>
-
             </div>
 
             <hr class="my-1">
             <div class="row">
                 <div class="col">{{ data.applied_user }}</a></div>
+                <div class="col">{{ data.from_date }}</div>
+                <div class="col">{{ data.to_date }}</div>
                 <div class="col">{{ data.number_of_days }}</div>
                 <div class="col">{{ data.leave_type }}</div>
                 <div class="col">{{ data.description }}</div>
@@ -38,7 +40,6 @@
                 {% else %}
                 <div class="col">Pending</div>
                 {% endif %}
-                <div class="col">{{ data.remark }}</div>
             </div>
             {% endif %}
         </div>
@@ -51,7 +52,8 @@
             <div class="row">
                 <div class="col">
                     <label for="remark" class="form-label"><b>Leave Remark</b></label>
-                    <input type="text" class="form-control" name="remark" id="remark" placeholder="NIL" required>
+                    <input type="text" class="form-control" name="remark" id="remark" value="{{ data.remark }}"
+                        required>
                 </div>
                 <div class="col">
                     <label for="status" class="form-label"><b>Leave Status</b></label>
