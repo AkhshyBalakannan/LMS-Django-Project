@@ -1,8 +1,4 @@
-from enum import auto
-import leavemanagementsys
-from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from users.models import CustomUser
 

@@ -47,6 +47,7 @@
 </ul>
 <ul class="list-group list-group-horizontal-xxl mb-2">
     <li class="list-group-item">
+        {% ifequal data.status "Pending" %}
         <form action="{% url 'update-leave-respond' data.id %}" method="POST" class="needs-validation" novalidate>
             {% csrf_token %}
             <div class="row">
@@ -68,9 +69,12 @@
                     </select>
                 </div>
             </div>
+            {% endifequal %}
             <div class="row align-items-center">
+                {% ifequal data.status "Pending" %}
                 <div class="col-12 mt-5"> <button type="submit" class="btn btn-success">Submit Response</button>
                     <button type="reset" class="btn btn-primary">Reset Response</button>
+                    {% endifequal %}
                     <a href="{% url 'list-leave-respond' %}"><input type="button" class="btn btn-outline-dark"
                             value="Back"></a>
                 </div>

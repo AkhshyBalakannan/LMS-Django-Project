@@ -15,10 +15,10 @@
             {% else %}
             <div class="row mb-1">
                 <div class="col"><b>Employee Name</b></div>
-                <div class="col"><b>Number of Days</b></div>
-                <div class="col"><b>Leave Type</b></div>
-                <div class="col"><b>Descriptions</b></div>
-                <!-- <div class="col"><b>Status</b></div> -->
+                <div class="col"><b>No. Leave taken</b></div>
+                <div class="col"><b>Leave Request Type</b></div>
+                <div class="col"><b>Description</b></div>
+                <div class="col" style="text-align: center;"><b>Status</b></div>
                 <div class="col"><b>Actions</b></div>
 
             </div>
@@ -30,12 +30,11 @@
             {% else %}
             <div class="row">
                 <div class="col">
-                    <a style="text-decoration: none; color: black;" href="{% url 'detail-leave-respond' data.id %}">
-                        {{ data.applied_user|upper }}
-                    </a>
+                    {{ data.applied_user.first_name }} {{ data.applied_user.last_name }}
                 </div>
-                <div class="col">{{ data.number_of_days }}</div>
+                <div class="col" style="text-align: center;">{{ data.applied_user.leave_taken }}</div>
                 <div class="col">{{ data.leave_type }}</div>
+
                 <div class="col">{{ data.description }}</div>
                 <!-- <div class="col">{{ data.status }}</div> -->
                 {% if data.status == "Approved" %}
@@ -43,12 +42,19 @@
                 {% elif data.status == "Cancel" %}
                 <div class="col" style="background-color: rgb(196, 196, 196);text-align:center;">Leave Cancelled</div>
                 {% elif data.status == "Reject" %}
-                <div class="col" style="background-color: rgb(255, 230, 0);text-align:center;">Leave Rejected</div>
+                <div class="col" style="background-color: tomato;text-align:center;">Leave Rejected</div>
                 {% else %}
-                <div class="col" style="background-color: tomato;text-align:center;"><a
-                        style="color: black; text-decoration: none;"
-                        href="{% url 'detail-leave-respond' data.id %}">Pending</a></div>
+                <div class="col" style="background-color: rgb(255, 230, 0);text-align:center;">
+                    <a style="color: black; text-decoration: none;"
+                        href="{% url 'detail-leave-respond' data.id %}">Pending</a>
+                </div>
                 {% endif %}
+                <div class="col">
+                    <a class="btn btn-sm btn-outline-primary" style="text-decoration: none;text-align:inherit;"
+                        href="{% url 'detail-leave-respond' data.id %}">
+                        Approve / Reject
+                    </a>
+                </div>
             </div>
             <hr class="my-1">
             {% endifequal %}

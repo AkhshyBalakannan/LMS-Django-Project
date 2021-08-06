@@ -8,7 +8,7 @@ class CustomUserAdmin(UserAdmin):
         'username', 'email', 'first_name', 'last_name', 'is_staff',
         'is_employee', 'is_manager', 'leave_eligible',
         'leave_taken', 'leave_remaining', 'lop_leave_taken',
-        'covid_leave_taken'
+        'covid_leave_taken',
     )
 
     fieldsets = (
@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
         ('Additional info', {
             'fields': ('is_employee', 'is_manager', 'leave_eligible',
                        'leave_taken', 'leave_remaining', 'lop_leave_taken',
-                       'covid_leave_taken')
+                       'covid_leave_taken',)
         })
     )
 
@@ -53,7 +53,7 @@ class CustomUserAdmin(UserAdmin):
         ('Additional info', {
             'fields': ('is_employee', 'is_manager', 'leave_eligible',
                        'leave_taken', 'leave_remaining', 'lop_leave_taken',
-                       'covid_leave_taken')
+                       'covid_leave_taken',)
         })
     )
 

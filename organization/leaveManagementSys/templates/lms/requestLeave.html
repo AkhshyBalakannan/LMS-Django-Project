@@ -14,7 +14,8 @@
                             <label for="fromdate" class="col-form-label">From Date</label>
                         </div>
                         <div class="col">
-                            <input type="date" name="fromdate" id="from_date" class="form-control" required>
+                            <input type="date" name="fromdate" id="from_date" class="form-control" min="{{ today }}"
+                                max="{{ year_duration }}-{{ month_duration }}-{{ day_duration }}" required>
                         </div>
                     </div>
                     <div class="row g-3">
@@ -22,7 +23,8 @@
                             <label for="todate" class="col-form-label">To Date</label>
                         </div>
                         <div class="col">
-                            <input type="date" name="todate" id="to_date" class="form-control" required>
+                            <input type="date" name="todate" id="to_date" class="form-control" min="{{ today }}"
+                                max="{{ year_duration }}-{{ month_duration }}-{{ day_duration }}" required>
                         </div>
                     </div>
                     <div class="row g-3">
