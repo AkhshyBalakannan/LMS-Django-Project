@@ -4,60 +4,63 @@
 {% block content %}
 <div class="content-section">
     <div class="container">
-        <div class="card signup-card">
+        <div class="card signup-card leaverequest-card">
             <div class="card-body">
                 <form class="needs-validation" method="POST" novalidate>
                     {% csrf_token %}
-                    <legend class="border-bottom mb-4">Request Leave</legend>
-                    <div class="row g-3">
+                    <legend class="border-bottom mb-2">Request_Leave</legend>
+                    <div class="row g-3 mb-2">
                         <div class="col">
-                            <label for="fromdate" class="col-form-label">From Date</label>
+                            <label for="id_from_date" class="col-form-label">From Date</label>
                         </div>
                         <div class="col">
-                            <input type="date" name="fromdate" id="from_date" class="form-control" min="{{ today }}"
-                                max="{{ year_duration }}-{{ month_duration }}-{{ day_duration }}" required>
-                        </div>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col">
-                            <label for="todate" class="col-form-label">To Date</label>
-                        </div>
-                        <div class="col">
-                            <input type="date" name="todate" id="to_date" class="form-control" min="{{ today }}"
-                                max="{{ year_duration }}-{{ month_duration }}-{{ day_duration }}" required>
+                            <input type="date" name="from_date" class="dateinput form-control" required
+                                id="id_from_date" min="{{ today }}"
+                                max="{{ year_duration }}-{{ month_duration }}-{{ day_duration }}">
+                            <div class="invalid-feedback">
+                                Please provide a valid from date.
+                            </div>
                         </div>
                     </div>
-                    <div class="row g-3">
+                    <div class="row g-3 mb-2">
                         <div class="col">
-                            <label for="leavetype">Type of Leave</label>
+                            <label for="id_to_date" class="col-form-label">To Date</label>
                         </div>
                         <div class="col">
-                            <select name="leavetype" class="form-select" id="leavetype">
+                            <input type="date" name="to_date" min="{{ today }}"
+                                max="{{ year_duration }}-{{ month_duration }}-{{ day_duration }}"
+                                class="dateinput form-control" required id="id_to_date">
+                            <div class="invalid-feedback">
+                                Please provide a valid to date.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-2">
+                        <div class="col">
+                            <label for="id_leave_type">Type of Leave</label>
+                        </div>
+                        <div class="col">
+                            <select name="leave_type" class="select form-control" id="id_leave_type">
                                 <option selected value="Personal">Personal</option>
-                                <option value="LOP_leave">LOP Leave</option>
+                                <option value="LOP_leave" disabled>LOP Leave</option>
                                 <option value="Covid_permission">Covid Permission</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row g-3">
+                    <div class="row g-3 mb-2">
                         <div class="col">
-                            <label for="Description" class="col-form-label">Descriptions</label>
+                            <label for="id_description" class="col-form-label">Descriptions</label>
                         </div>
                         <div class="col">
-                            <input type="text" name="description" id="Description" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col">
-                            <label for="numofdays" class="col-form-label">No of Days</label>
-                        </div>
-                        <div class="col">
-                            <input type="number" name="numofdays" id="numberofdays" class="form-control" max="12"
-                                required>
+                            <input type="text" name="description" class="mt-1 mb-2 textinput textInput form-control"
+                                required id="id_description">
+                            <div class="invalid-feedback">
+                                Description cannot be empty
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                        <button class="btn btn-outline-info" id="submitbutton" type="submit">Submit</button>
                         <button class="btn btn-outline-info" type="reset">Reset</button>
                     </div>
                 </form>
@@ -65,5 +68,4 @@
         </div>
     </div>
 </div>
-
 {% endblock content %}

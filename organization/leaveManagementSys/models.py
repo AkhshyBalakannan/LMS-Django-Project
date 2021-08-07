@@ -15,3 +15,11 @@ class LeaveRequest(models.Model):
 
     def __str__(self):
         return f'description:{self.description}'
+
+
+class LeaveDates(models.Model):
+    applied_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    dates = models.DateField()
+
+    def __str__(self):
+        return f'{self.dates}'
