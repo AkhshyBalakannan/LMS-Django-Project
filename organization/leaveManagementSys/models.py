@@ -8,7 +8,7 @@ class LeaveRequest(models.Model):
     description = models.TextField()
     from_date = models.DateField(default=timezone.now)
     to_date = models.DateField(default=timezone.now)
-    leave_type = models.CharField(max_length=10, default='Personal',)
+    leave_type = models.CharField(max_length=20, default='Personal',)
     number_of_days = models.IntegerField()
     status = models.CharField(max_length=10, default='Pending',)
     remark = models.CharField(max_length=50, default='NIL')

@@ -53,14 +53,14 @@
         <form action="{% url 'update-leave-respond' data.id %}" method="POST" class="needs-validation" novalidate>
             {% csrf_token %}
             <div class="row">
-                <div class="col">
-                    <label for="remark" class="form-label"><b>Leave Remark</b></label>
-                    <input type="text" class="form-control" name="remark" id="remark" value="{{ data.remark }}"
-                        required>
+                <div class="col div_id_remark">
+                    <label for="id_remark" class="form-label"><b>Leave Remark</b></label>
+                    <input type="text" class="textinput textInput form-control" name="remark" id="id_remark"
+                        value="{{ data.remark }}" required>
                 </div>
-                <div class="col">
-                    <label for="status" class="form-label"><b>Leave Status</b></label>
-                    <select name="status" class="form-control">
+                <div class="col div_id_status">
+                    <label for="id_status" class="form-label"><b>Leave Status</b></label>
+                    <select name="status" class="form-control" id="id_status">
                         <option {% ifequal data.status "Pending" %} selected {% endifequal %} value="Pending">Pending
                         </option>
                         <option {% ifequal data.status "Approved" %} selected {% endifequal %} value="Approved">Approved

@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.views.generic.list import ListView
 from users.models import CustomUser
 from django.db import IntegrityError
-from .forms import LeaveRequestForm
+from .forms import LeaveRequestForm, LeaveRespondForm
 
 
 @login_required
@@ -43,20 +43,30 @@ def request_leave(request):
             try:
                 leave_dates = LeaveDates.objects.filter(
                     applied_user=request.user)
+                print(leave_dates)
                 for leave_date in leave_dates:
                     if str(leave_date) == str(from_date) or str(leave_date) == str(to_date):
+                        print('from if ')
                         raise IntegrityError
                     to_check_date = number_of_days
                     date = from_date
-                    while to_check_date:
-                        date = date+datetime.timedelta(days=1)
-                        if str(leave_date) == str(date):
-                            raise IntegrityError
-                        to_check_date -= 1
-
+                    if not to_check_date == 1:
+                        while to_check_date:
+                            if str(leave_date) == str(date):
+                                print("hey from while")
+                                raise IntegrityError
+                            date = date+datetime.timedelta(days=1)
+                            to_check_date -= 1
+                print("before if covid")
+                if leave_type == 'Covid_permission':
+                    if int(number_of_days) > 7:
+                        messages.warning(
+                            request, f'Covid Leave span is only 7 days')
+                        return HttpResponseRedirect(reverse('leave-request'))
+                print("Before creations of leave")
                 LeaveRequest.objects.create(applied_user=request.user,
                                             description=description, from_date=from_date, to_date=to_date, leave_type=leave_type, number_of_days=number_of_days)
-
+                print("after Creation of leave")
                 to_store_date = number_of_days
                 date = from_date
                 while to_store_date:
@@ -68,17 +78,6 @@ def request_leave(request):
                 if request.user.is_manager:
                     ''' Updates all entry as approved if its manager'''
                     LeaveRequest.objects.update(status="Approved")
-                if leave_type == 'Covid_permission':
-                    if int(number_of_days) > 7:
-                        messages.warning(
-                            request, f'Covid Leave span is only 7 days')
-                        return HttpResponseRedirect(reverse('leave-request'))
-                    else:
-                        logged_user.covid_leave_taken += int(number_of_days)
-                        messages.success(
-                            request, f'Take care of your health, Leave Request Received')
-                        return HttpResponseRedirect(reverse('home'))
-                else:
                     logged_user.leave_taken += int(number_of_days)
                     logged_user.leave_remaining -= int(number_of_days)
                     if logged_user.leave_remaining < 0:
@@ -87,26 +86,36 @@ def request_leave(request):
                         logged_user.lop_leave_taken += int(number_of_days)
                         logged_user.leave_type = 'LOP_leave'
                     logged_user.save()
+
+                if leave_type == 'Covid_permission':
+                    logged_user.covid_leave_taken += int(number_of_days)
+                    logged_user.save()
                     messages.success(
-                        request, f'Leave Request Successfully submitted !')
-                    return HttpResponseRedirect(reverse('home'))
+                        request, f'Take care of your health, Leave Request Received')
+
+                messages.success(
+                    request, f'Leave Request Successfully submitted !')
+                return HttpResponseRedirect(reverse('home'))
 
             except IntegrityError:
                 messages.warning(
                     request, f'Leave Request For the day already exists')
                 return HttpResponseRedirect(reverse('home'))
-            return HttpResponseRedirect(reverse('home'))
         else:
             print(form)
             return HttpResponseRedirect(reverse('leave-request'))
     else:
-        advanced_month_range = 6
+        advanced_month_range = 4
         validation_to_day = validation_from_date.day
         validation_to_year = validation_from_date.year
         validation_to_month = validation_from_date.month+advanced_month_range
         while validation_to_month > 12:
             validation_to_year += 1
             validation_to_month -= 12
+        if validation_to_day <= 9:
+            validation_to_day = f'0{validation_to_day}'
+        if validation_to_month <= 9:
+            validation_to_month = f'0{validation_to_month}'
         return render(request, 'lms/requestLeave.html',
                       {'form': form, 'today': str(validation_from_date),
                        'month_duration': validation_to_month,
@@ -140,7 +149,7 @@ class ViewListLeaveRequest(generic.ListView):
     def get_queryset(self):
         '''Returns list of all requests'''
         # manager = CustomUser.objects.filter(is_manager=True)
-        leave_request = LeaveRequest.objects.all()
+        leave_request = LeaveRequest.objects.all().order_by('-from_date')
         return leave_request
 
 
@@ -151,9 +160,30 @@ class ViewDetailLeaveRequest(generic.DetailView):
     context_object_name = 'data'
 
 
-class LeaveRequestUpdate(UpdateView):
-    '''This is to respond to leave request matched with post route'''
-    model = LeaveRequest
-    fields = ['remark', 'status']
-    # success_url = '/leaveRespond/'
-    success_url = reverse_lazy('list-leave-respond')
+@login_required
+def leave_request_process(request, pk):
+    if request.method == 'POST':
+        form = LeaveRespondForm(request.POST)
+        if form.is_valid():
+            remark = form.cleaned_data['remark']
+            status = form.cleaned_data['status']
+            leave = LeaveRequest.objects.get(id=pk)
+            LeaveRequest.objects.filter(id=pk).update(
+                remark=remark, status=status)
+            if status == "Approved" and not leave.leave_type == 'Covid_permission':
+                user_with_leave = leave.applied_user
+                number_of_days = leave.number_of_days
+                user_with_leave.leave_taken += int(number_of_days)
+                user_with_leave.leave_remaining -= int(number_of_days)
+                if user_with_leave.leave_remaining < 0:
+                    number_of_days = -int(user_with_leave.leave_remaining)
+                    user_with_leave.leave_remaining = 0
+                    user_with_leave.lop_leave_taken += int(number_of_days)
+                    user_with_leave.leave_type = 'LOP_leave'
+                user_with_leave.save()
+                messages.success(
+                    request, f'Leave Request has been Approved :)')
+            elif status == "Reject":
+                messages.warning(
+                    request, f"Leave Request has been Rejected :'(")
+            return HttpResponseRedirect(reverse('list-leave-respond'))

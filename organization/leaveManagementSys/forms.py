@@ -20,3 +20,19 @@ class LeaveRequestForm(ModelForm):
     class Meta:
         model = LeaveRequest
         fields = ['from_date', 'to_date', 'leave_type', 'description']
+
+
+class LeaveRespondForm(ModelForm):
+    OPTIONS = (
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Reject', 'Reject'),
+    )
+
+    remark = forms.CharField(required=True)
+    status = forms.ChoiceField(
+        required=True, choices=OPTIONS)
+
+    class Meta:
+        model = LeaveRequest
+        fields = ['remark', 'status']
