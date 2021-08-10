@@ -60,20 +60,26 @@
                             <li>
                                 <hr class="dropdown-divider">
                                 {% endif %}
-
+                                {% if not user.is_manager %}
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'cancel-request' %}">Cancel Leave</a></li>
-
-                        </ul>
+                            <li><a class="dropdown-item" href="{% url 'cancel-request' %}">Cancel Leave</a>
+                            </li>
+                            {% endif %}
+                            {% if user.is_manager %}
                     </li>
-                    <li class="nav-item active">
-                        <a href="#" class="nav-link"></i>Release Notes</a>
+                    <li><a class="dropdown-item disabled" href="{% url 'cancel-request' %}">Cancel Leave</a>
                     </li>
-                    {% ifequal user.username "admin" %}
-                    <li class="nav-item active">
-                        <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
-                    </li>
-                    {% endifequal %}
+                    {% endif %}
+                </ul>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" class="nav-link"></i>Release Notes</a>
+                </li>
+                {% ifequal user.username "admin" %}
+                <li class="nav-item active">
+                    <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
+                </li>
+                {% endifequal %}
                 </ul>
                 <form action="{% url 'logout' %}" class="d-flex">
                     <small style="padding: 0.5rem;">Welcome

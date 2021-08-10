@@ -14,10 +14,9 @@
             </div>
             {% else %}
             <div class="row mb-1">
-                <div class="col"><b>Employee Name</b></div>
-                <div class="col"><b>No. Leave taken</b></div>
+                <div class="col-md-3"><b>Employee Name</b></div>
                 <div class="col"><b>Leave Request Type</b></div>
-                <div class="col"><b>Description</b></div>
+                <div class="col-md-3"><b>Description</b></div>
                 <div class="col" style="text-align: center;"><b>Status</b></div>
                 <div class="col"><b>Actions</b></div>
 
@@ -29,13 +28,12 @@
             {{ continue }}
             {% else %}
             <div class="row">
-                <div class="col">
+                <div class="col-md-3">
                     {{ data.applied_user.first_name }} {{ data.applied_user.last_name }}
                 </div>
-                <div class="col" style="text-align: center;">{{ data.applied_user.leave_taken }}</div>
                 <div class="col">{{ data.leave_type }}</div>
 
-                <div class="col">{{ data.description }}</div>
+                <div class="col-md-3">{{ data.description }}</div>
                 <!-- <div class="col">{{ data.status }}</div> -->
                 {% if data.status == "Approved" %}
                 <div class="col" style="background-color: rgb(51, 255, 32);text-align:center;">Leave Approved</div>
