@@ -6,9 +6,12 @@
 <ul class="list-group list-group-horizontal-xxl mb-3">
     <li class="list-group-item">
         <div>
-            <p class="my-1"> <b>Leave Details</b> Leaves taken by this user
-                <a class="btn btn-outline-primary"
-                    href="{% url 'detail-user-leaves' data.applied_user.username %}">click me</a>
+            <p class="row">
+                <a class="btn btn-outline-dark"
+                    href="{% url 'detail-user-leaves' data.applied_user.first_name data.id %}">
+                    Leaves taken by {{ data.applied_user.first_name }} {{ data.applied_user.last_name }}</a>
+            </p>
+            <p class="my-1 row"> <b>Leave Details</b>
             </p>
             <hr class="my-1">
             {% if not data %}

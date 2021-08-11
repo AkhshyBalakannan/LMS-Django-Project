@@ -5,11 +5,12 @@
 <ul class="list-group list-group-horizontal-xxl mb-2">
     <li class="list-group-item">
         <div>
-            <p class="my-1">
+            <p class="my-1 row">
                 <b>
-                    {% for data in datas|slice:":1" %}
+                    {{ view.kwargs.user_first_name|upper }}'s Leave List
+                    <!-- {% for data in datas|slice:":1" %}
                     {{ data.applied_user.first_name|upper }}'s Leave List
-                    {% endfor %}
+                    {% endfor %} -->
                 </b>
             </p>
             <hr class="my-1">
@@ -81,5 +82,12 @@
     </li>
 </ul>
 {% endif %}
+<ul class="list-group list-group-horizontal-xxl mb-2">
+    <li class="list-group-item">
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-dark" href="{% url 'detail-leave-respond' view.kwargs.leaverequest %}">Back</a>
+        </div>
+    </li>
+</ul>
 {% endif %}
 {% endblock content %}

@@ -88,6 +88,9 @@
                     {% if not user.is_manager %}
                     {% if data.status == "Reject" or data.status == "Approved" %}
                     <div class="col">{{ data.remark }}</div>
+                    {% elif data.status == "Cancel" %}
+                    <div class="col">Leave Cancelled</div>
+
                     {% else %}
                     <div class="col">Leave Not Responded</div>
                     {% endif %}
@@ -99,4 +102,33 @@
         </li>
     </ul>
 </div>
+{% if is_paginated %}
+<ul class="list-group list-group-horizontal-xxl mb-2">
+    <li class="list-group-item">
+        <div class="d-flex justify-content-evenly">
+            <div class="d-inline">
+                {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn btn-outline-dark">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-dark">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+
+                {% if num == page_obj.number %}
+                <a href="?page={{ num }}" class="btn btn-dark">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-2' and num > page_obj.number|add:'2' %}
+                <a href="?page={{ num }}" class="btn btn-outline-dark">{{ num }}</a>
+                {% endif %}
+
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a class="btn btn-outline-dark" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-dark" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
+        </div>
+    </li>
+</ul>
+{% endif %}
 {% endblock content %}

@@ -91,7 +91,7 @@ def request_leave(request):
                     logged_user.covid_leave_taken += int(number_of_days)
                     logged_user.save()
                     messages.success(
-                        request, f'Take care of your health, Leave Request Received')
+                        request, f'Take care of your health')
 
                 messages.success(
                     request, f'Leave Request Successfully submitted !')
@@ -147,7 +147,7 @@ class ViewListLeaveRequest(generic.ListView):
     template_name = 'lms/list_respondLeave.html'    # Explicit allocating temp
     context_object_name = 'datas'   # Explicit allocating var name
     ordering = ['-from_date']
-    paginate_by = 2
+    paginate_by = 5
 
 
 class ViewDetailLeaveRequest(generic.DetailView):
@@ -166,7 +166,7 @@ class ViewListUserLeaves(generic.ListView):
 
     def get_queryset(self):
         user = get_object_or_404(
-            CustomUser, username=self.kwargs.get('username'))
+            CustomUser, first_name=self.kwargs.get('user_first_name'))
         return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')
 
 
