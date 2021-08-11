@@ -16,6 +16,8 @@ urlpatterns = [
          name='list-leave-respond'),
     path('userleaveRespond/<int:pk>/', login_required(lms_views.ViewDetailLeaveRequest.as_view()),
          name='detail-leave-respond'),
+    path('userleaves/<str:username>',
+         login_required(lms_views.ViewListUserLeaves.as_view()), name='detail-user-leaves'),
     path('leaveRespond/update/<int:pk>/',
          lms_views.leave_request_process, name='update-leave-respond'),
     path('logout/', auth_views.LogoutView.as_view(template_name='registration/logout.html'), name='logout'),

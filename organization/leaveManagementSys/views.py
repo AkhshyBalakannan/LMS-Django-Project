@@ -4,7 +4,7 @@ from django.urls.base import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import UpdateView
 from leavemanagementsys.models import LeaveRequest, LeaveDates
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
@@ -143,14 +143,11 @@ def cancel_request(request):
 
 class ViewListLeaveRequest(generic.ListView):
     '''This is manager page to view list of request'''
+    model = LeaveRequest
     template_name = 'lms/list_respondLeave.html'    # Explicit allocating temp
     context_object_name = 'datas'   # Explicit allocating var name
-
-    def get_queryset(self):
-        '''Returns list of all requests'''
-        # manager = CustomUser.objects.filter(is_manager=True)
-        leave_request = LeaveRequest.objects.all().order_by('-from_date')
-        return leave_request
+    ordering = ['-from_date']
+    paginate_by = 2
 
 
 class ViewDetailLeaveRequest(generic.DetailView):
@@ -158,6 +155,19 @@ class ViewDetailLeaveRequest(generic.DetailView):
     model = LeaveRequest
     template_name = 'lms/detail_respondLeave.html'
     context_object_name = 'data'
+
+
+class ViewListUserLeaves(generic.ListView):
+    '''This is manager page to view list of request'''
+    model = LeaveRequest
+    template_name = 'lms/list_userLeave.html'    # Explicit allocating temp
+    context_object_name = 'datas'   # Explicit allocating var name
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = get_object_or_404(
+            CustomUser, username=self.kwargs.get('username'))
+        return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')
 
 
 @login_required

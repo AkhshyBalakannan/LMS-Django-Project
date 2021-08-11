@@ -1,39 +1,36 @@
 {% extends 'base\base.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
 {% block content %}
 {% if user.is_manager %}
 <ul class="list-group list-group-horizontal-xxl mb-2">
     <li class="list-group-item">
         <div>
-            <p class="my-1"> <b>Leave Details</b> </p>
+            <p class="my-1">
+                <b>
+                    {% for data in datas|slice:":1" %}
+                    {{ data.applied_user.first_name|upper }}'s Leave List
+                    {% endfor %}
+                </b>
+            </p>
             <hr class="my-1">
-            {% if not datas %}
-            <div class="row">
-                <div class="align-items-center">No Leaves request</div>
-            </div>
-            {% else %}
             <div class="row mb-1">
-                <div class="col-md-3"><b>Employee Name</b></div>
+                <div class="col"><b>From Date</b></div>
+                <div class="col"><b>To Date</b></div>
+                <div class="col"><b>Number of days</b></div>
                 <div class="col"><b>Leave Request Type</b></div>
-                <div class="col-md-3"><b>Description</b></div>
+                <div class="col"><b>Description</b></div>
+                <div class="col"><b>Remark</b></div>
                 <div class="col" style="text-align: center;"><b>Status</b></div>
-                <div class="col"><b>Actions</b></div>
             </div>
             <hr class="my-1">
-
             {% for data in datas %}
-            {% if data.applied_user.is_manager %}
-            {{ continue }}
-            {% else %}
             <div class="row">
-                <div class="col-md-3">
-                    {{ data.applied_user.first_name }} {{ data.applied_user.last_name }}
-                </div>
+                <div class="col">{{ data.from_date }}</div>
+                <div class="col">{{ data.to_date }}</div>
+                <div class="col">{{ data.number_of_days }}</div>
                 <div class="col">{{ data.leave_type }}</div>
-
-                <div class="col-md-3">{{ data.description }}</div>
-                <!-- <div class="col">{{ data.status }}</div> -->
+                <div class="col">{{ data.description }}</div>
+                <div class="col">{{ data.remark }}</div>
                 {% if data.status == "Approved" %}
                 <div class="col" style="background-color: rgba(50, 255, 32, 0.705);text-align:center;">Leave Approved
                 </div>
@@ -48,17 +45,9 @@
                         href="{% url 'detail-leave-respond' data.id %}">Pending</a>
                 </div>
                 {% endif %}
-                <div class="col">
-                    <a class="btn btn-sm btn-outline-primary" style="text-decoration: none;text-align:inherit;"
-                        href="{% url 'detail-leave-respond' data.id %}">
-                        Approve / Reject
-                    </a>
-                </div>
             </div>
             <hr class="my-1">
-            {% endif %}
             {% endfor %}
-            {% endif %}
             <div class="d-flex justify-content-center">End of Records</div>
         </div>
     </li>

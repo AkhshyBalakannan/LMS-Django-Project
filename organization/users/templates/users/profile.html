@@ -5,26 +5,21 @@
     <ul class="list-group list-group-horizontal-xxl mb-3">
         <li class="list-group-item">
             <div class="row">
-                <div class="col">Employee Name:</div>
+                <div class="col"><b>Employee Name</b></div>
+                <div class="col"><b>Email Id</b></div>
+                <div class="col"><b>Designation</b></div>
+            </div>
+            <div class="row">
                 <div class="col">
                     {{ user.first_name }} {{ user.last_name }}
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">Email Id:</div>
                 <div class="col">{{ user.email }}</div>
-            </div>
-            {% if user.is_manager %}
-            <div class="row">
-                <div class="col">Designation:</div>
+                {% if user.is_manager %}
                 <div class="col">Manager</div>
-            </div>
-            {% else %}
-            <div class="row">
-                <div class="col">Designation:</div>
+                {% else %}
                 <div class="col">Employee</div>
+                {% endif %}
             </div>
-            {% endif %}
         </li>
     </ul>
     <ul class="list-group list-group-horizontal-xxl mb-2">
