@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import os
+import os  # this import is done for mail id and pass in env
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +27,11 @@ SECRET_KEY = 'django-insecure-$ni4ncct1)crs)la(01xalnx_c2(gd%smh*dg5^#iehya1)8hs
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# A list of strings representing the host/domain names
+# that this Django site can serve. This is a security
+# measure to prevent HTTP Host header attacks,
+# which are possible even under many seemingly-safe
+# web server configurations.
 
 
 # Application definition
@@ -96,18 +101,6 @@ DATABASES = {
     }
 }
 
-# TEST DB
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'testdb',
-#         'USER': 'root',
-#         'PASSWORD': '1234',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -146,6 +139,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -164,5 +160,3 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('MAIL_USERNAME')
 EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASS')
-# EMAIL_HOST_USER = 'lmsabcorg@gmail.com'
-# EMAIL_HOST_PASSWORD = 'lmsabcorg123'

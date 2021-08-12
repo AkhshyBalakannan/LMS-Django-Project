@@ -28,7 +28,7 @@
         </div>
     </nav>
 
-    <nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-expand-md navbar-light navbar-color">
         <div class="container">
             <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -73,11 +73,14 @@
                 </ul>
                 </li>
                 <li class="nav-item active">
-                    <a href="#" class="nav-link"></i>Release Notes</a>
+                    <a href="{% url 'user-profile' %}" class="nav-link"></i>User Profile</a>
                 </li>
-                {% ifequal user.username "admin" %}
+                {% ifequal user.is_admin_employee True %}
                 <li class="nav-item active">
                     <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{% url 'select-update-user' %}" class="nav-link"></i>Update User Account</a>
                 </li>
                 {% endifequal %}
                 </ul>
@@ -110,6 +113,5 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{% static 'js/copyrights.js' %}"></script>
 <script src="{% static 'js/formvalidation.js' %}"></script>
-<!-- <script src="{% static 'js/requestLeave.js' %}"></script> -->
 
 </html>

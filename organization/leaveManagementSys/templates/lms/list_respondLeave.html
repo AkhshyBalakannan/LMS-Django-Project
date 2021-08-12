@@ -15,9 +15,9 @@
             {% else %}
             <div class="row mb-1">
                 <div class="col-md-3"><b>Employee Name</b></div>
-                <div class="col"><b>Leave Request Type</b></div>
+                <div class="col"><b>Leave Type</b></div>
                 <div class="col-md-3"><b>Description</b></div>
-                <div class="col" style="text-align: center;"><b>Status</b></div>
+                <div class="col list-respond-leave"><b>Status</b></div>
                 <div class="col"><b>Actions</b></div>
             </div>
             <hr class="my-1">
@@ -35,21 +35,22 @@
                 <div class="col-md-3">{{ data.description }}</div>
                 <!-- <div class="col">{{ data.status }}</div> -->
                 {% if data.status == "Approved" %}
-                <div class="col" style="background-color: rgba(50, 255, 32, 0.705);text-align:center;">Leave Approved
+                <div class="col status-approve">Leave Approved
                 </div>
                 {% elif data.status == "Cancel" %}
-                <div class="col" style="background-color: rgb(196, 196, 196);text-align:center;">Leave Cancelled</div>
+                <div class="col status-cancel">Leave Cancelled</div>
                 {% elif data.status == "Reject" %}
-                <div class="col" style="background-color: rgba(255, 99, 71, 0.705);text-align:center;">Leave Rejected
+                <div class="col status-reject">Leave Rejected
                 </div>
                 {% else %}
-                <div class="col" style="background-color: rgba(255, 230, 0, 0.705);text-align:center;">
-                    <a style="color: black; text-decoration: none;"
-                        href="{% url 'detail-leave-respond' data.id %}">Pending</a>
+                <div class="col status-pending">
+                    <a class="anchor-tag-reset" href="{% url 'detail-leave-respond' data.id %}">
+                        Pending
+                    </a>
                 </div>
                 {% endif %}
                 <div class="col">
-                    <a class="btn btn-sm btn-outline-primary" style="text-decoration: none;text-align:inherit;"
+                    <a class="btn btn-sm btn-outline-primary anchor-tag-button"
                         href="{% url 'detail-leave-respond' data.id %}">
                         Approve / Reject
                     </a>

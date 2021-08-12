@@ -1,3 +1,5 @@
+from django.conf.urls.static import static
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -5,11 +7,13 @@ from users import views as user_views
 from leavemanagementsys import views as lms_views
 from django.urls import path
 
+# All views from apps are imported with app_views and used
 urlpatterns = [
     path('', user_views.home, name='default'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('home/', user_views.home, name='home'),
     path('profile/', login_required(user_views.ViewListProfile.as_view()), name='profile'),
+    path('user-profile/', user_views.user_profile, name='user-profile'),
     path('leaveRequest/', lms_views.request_leave, name='leave-request'),
     path('cancelRequest/', lms_views.cancel_request, name='cancel-request'),
     path('leaveRespond/', login_required(lms_views.ViewListLeaveRequest.as_view()),
@@ -30,5 +34,13 @@ urlpatterns = [
     path('reset-mypass-completed/', auth_views.PasswordResetCompleteView.as_view(
         template_name='password_reset_completed.html'), name='password_reset_complete'),
     path('register/', user_views.register, name='register-user'),
+    path('select-update-user/', user_views.select_update_user,
+         name='select-update-user'),
+    path('update-user/<str:email>/',
+         user_views.update_user, name='update-user'),
     path('admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

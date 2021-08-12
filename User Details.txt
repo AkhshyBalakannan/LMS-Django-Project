@@ -7,17 +7,17 @@ password:	useradmin
 
 MANAGER
 user name:	akhshy
-password:	akhshy	
+password:	passwordakhshy	
 
 
 EMPLOYEE
 user name:	ashwin
-password:	ashwin	
+password:	passwordashwin	
 
 EMPLOYEE
 user name:	jeffry
-password:	jeffry	
+password:	passwordjeffry	
 
 EMPLOYEE
 user name:	sujatha
-password:	sujatha	
+password:	passwordsujatha	
