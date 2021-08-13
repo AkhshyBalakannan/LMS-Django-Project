@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class CustomUser(AbstractUser):
     profile_pic = models.ImageField(
-        default='default.jpg', upload_to='profile_pic')
+        upload_to='profile_pic/', default='default.jpg')
     address = models.CharField(
         max_length=200, default='Bay Area, San Francisco, CA')
     is_admin_employee = models.BooleanField(default=False)

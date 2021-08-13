@@ -17,7 +17,8 @@ def register(request):
     admin can create account for the new joinies'''
     if request.user.is_admin_employee == True:    # validation for checking is_admin
         if request.method == 'POST':
-            form = UserRegisterForm(request.POST)   # django validating form
+            # django validating form
+            form = UserRegisterForm(request.POST, request.FILES)
             if form.is_valid():  # checking is it valid
                 form.save()
                 # Cleaned_data will contain data after validations
@@ -38,7 +39,7 @@ def register(request):
 def select_update_user(request):
     '''This is the user name select for updation view'''
     if request.user.is_admin_employee == True:    # validation for checking is_admin
-        form = UserSelectUpdateForm(request.POST or None)
+        form = UserSelectUpdateForm(request.POST, request.FILES)
         if request.method == 'POST':
             if form.is_valid():  # checking is it valid
                 email = form.cleaned_data['email']
@@ -46,6 +47,7 @@ def select_update_user(request):
             else:
                 return HttpResponseRedirect(reverse('home'))
         else:
+            form = UserSelectUpdateForm()
             return render(request, 'users/update_user.html', {'form': form})
     else:
         # This is an extra step of validating that only admin can access
@@ -78,7 +80,7 @@ def update_user(request, email):
                 CustomUser.objects.filter(
                     username=username).update(email=form['email'], first_name=form['first_name'],
                                               last_name=form['last_name'], phone_number=form['phone_number'],
-                                              profile_pic=form['profile_pic'], address=form['address'],
+                                              address=form['address'],
                                               is_admin_employee=is_admin_employee,
                                               is_employee=is_employee, is_manager=is_manager,
                                               leave_eligible=form['leave_eligible'], leave_taken=form['leave_taken'],
@@ -101,7 +103,7 @@ def update_user(request, email):
             if update_user == None:
                 messages.warning(
                     request, f'No matching email Id were found in database Please check the mail Id entered')
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('select-update-user'))
             return render(request, 'users/update_user_submit.html', {'update_user': update_user})
     else:
         # This is an extra step of validating that only admin can access

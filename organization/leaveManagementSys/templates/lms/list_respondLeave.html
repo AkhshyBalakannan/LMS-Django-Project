@@ -31,9 +31,7 @@
                     {{ data.applied_user.first_name }} {{ data.applied_user.last_name }}
                 </div>
                 <div class="col">{{ data.leave_type }}</div>
-
                 <div class="col-md-3">{{ data.description }}</div>
-                <!-- <div class="col">{{ data.status }}</div> -->
                 {% if data.status == "Approved" %}
                 <div class="col status-approve">Leave Approved
                 </div>

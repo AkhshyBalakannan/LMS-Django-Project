@@ -27,6 +27,6 @@ class UserUpdationForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'phone_number',
-                  'profile_pic', 'address', 'is_admin_employee', 'is_employee', 'is_manager', 'leave_eligible',
+                  'address', 'is_admin_employee', 'is_employee', 'is_manager', 'leave_eligible',
                   'leave_taken', 'leave_remaining', 'lop_leave_taken',
                   'covid_leave_taken']

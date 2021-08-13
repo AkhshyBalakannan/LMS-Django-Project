@@ -8,7 +8,7 @@
     <div class="container">
         <div class="card signup-card">
             <div class="card-body">
-                <form method="POST" class="needs-validation" novalidate>
+                <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     <fieldset class="form-group">
                         <legend class="border-bottom mb-4">Create User</legend>
@@ -42,17 +42,6 @@
                             <div class=""> <input type="text" name="phone_number" value="{{ update_user.phone_number }}"
                                     maxlength="10" class="textinput textInput form-control" required
                                     id="id_phone_number"> </div>
-                        </div>
-                        <div id="div_id_profile_pic" class="form-group"> <label for="id_profile_pic"
-                                class=" requiredField">
-                                Profile pic<span class="asteriskField">*</span> </label>
-                            <div class=""> <input type="file" name="profile_pic" accept="image/*"
-                                    class="clearablefileinput form-control-file" id="id_profile_pic"
-                                    value="{{ update_user.profile_pic.url }}" required>
-                                <div class="invalid-feedback">
-                                    Please choose a file before clicking update.
-                                </div>
-                            </div>
                         </div>
                         <div id="div_id_address" class="form-group"> <label for="id_address" class=" requiredField">
                                 Address<span class="asteriskField">*</span> </label>

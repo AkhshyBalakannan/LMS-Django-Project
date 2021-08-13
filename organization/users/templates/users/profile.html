@@ -16,6 +16,8 @@
                 <div class="col">{{ user.email }}</div>
                 {% if user.is_manager %}
                 <div class="col">Manager</div>
+                {% elif user.is_admin_employee %}
+                <div class="col">Admin Employee</div>
                 {% else %}
                 <div class="col">Employee</div>
                 {% endif %}

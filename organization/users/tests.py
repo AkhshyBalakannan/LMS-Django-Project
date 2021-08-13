@@ -28,12 +28,6 @@ class UserCreationsTestCase(TestCase):
         self.assertEqual(manager_user.username, 'testuser_m')
         self.assertEqual(employee_user.username, 'testuser_e')
 
-    # def test_create_user_check(self):
-        # manager_user = CustomUser.objects.get(username='testuser_m')
-        # employee_user = CustomUser.objects.get(username='testuser_e')
-        # self.assertEqual(manager_user.username, 'testuser_m')
-        # self.assertEqual(employee_user.username, 'testuser_e')
-
     def test_leave_request_create(self):
         logged_user = CustomUser.objects.get_or_create(
             username='testuser_e', password='passwordtestingacc')
