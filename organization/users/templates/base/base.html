@@ -1,4 +1,5 @@
 {% load static %}
+{% load has_group %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +28,7 @@
         </div>
         </div>
     </nav>
-
+    {% if user.is_authenticated %}
     <nav class="navbar navbar-expand-md navbar-light navbar-color">
         <div class="container">
             <a class="navbar-brand" href="#"></a>
@@ -47,54 +48,60 @@
                             Leave
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">View My Leave</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'myleave' %}">View My Leave</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'leave-request' %}">Request Leave</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'leave-request' %}">Request Leave</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                                 {% if user.is_manager %}
-                            <li><a class="dropdown-item" href="{% url 'list-leave-respond' %}">Respond Leave Request</a>
+                                <a class="dropdown-item" href="{% url 'list-leave-respond' %}">Respond Leave Request</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
                                 {% endif %}
                                 {% if not user.is_manager %}
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'cancel-request' %}">Cancel Leave</a>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'cancel-request' %}">Cancel Leave</a>
                             </li>
                             {% endif %}
                             {% if user.is_manager %}
+                            <li>
+                                <a class="dropdown-item disabled" href="{% url 'cancel-request' %}">Cancel Leave</a>
+                            </li>
+                            {% endif %}
                     </li>
-                    <li><a class="dropdown-item disabled" href="{% url 'cancel-request' %}">Cancel Leave</a>
-                    </li>
-                    {% endif %}
                 </ul>
                 </li>
                 <li class="nav-item active">
                     <a href="{% url 'user-profile' %}" class="nav-link"></i>User Profile</a>
                 </li>
-                {% ifequal user.is_admin_employee True %}
+                {% if user|has_group:"Adminstrator" %}
                 <li class="nav-item active">
                     <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
                 </li>
                 <li class="nav-item active">
                     <a href="{% url 'select-update-user' %}" class="nav-link"></i>Update User Account</a>
                 </li>
-                {% endifequal %}
+                {% endif %}
                 </ul>
                 <form action="{% url 'logout' %}" class="d-flex">
                     <small style="padding: 0.5rem;">Welcome
-                        <b>{{ user.first_name|capfirst }}.{{ user.last_name|capfirst }}</b>
+                        <b>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</b>
                     </small>
                     <button class="btn btn-outline-dark" type="submit">logout</button>
                 </form>
             </div>
         </div>
     </nav>
-
-    <div class="container mt-5 mb-5">
+    {% endif %}
+    <div class="container mt-5 mb-2">
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }}">{{ message }}</div>
@@ -103,6 +110,7 @@
         {% block content %}
         {% endblock content %}
     </div>
+
 </body>
 
 <footer>

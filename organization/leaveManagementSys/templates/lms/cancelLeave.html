@@ -46,7 +46,8 @@
                 <div class="col">
                     <form action="{% url 'cancel-request' %}" method="POST">
                         {% csrf_token %}
-                        <input type="text" name="id" class="btn" value="{{ data.id }}" readonly hidden>
+                        <input type="text" name="id" class="btn" value="{{ data.id }}" id="id_id" readonly hidden>
+                        <input type="text" name="status" id="id_status" value='Cancel' hidden>
                         <button type="submit" class="btn btn-warning">Cancel Leave</button>
                     </form>
                 </div>

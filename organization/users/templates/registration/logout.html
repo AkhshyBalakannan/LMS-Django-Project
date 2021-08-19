@@ -1,4 +1,4 @@
-{% extends 'base\auth_base.html' %}
+{% extends 'base\base.html' %}
 {% block content %}
 <h2 class="mt-3">You have been logged out successfully</h2>
 <div class="border-top pt-3">
@@ -6,5 +6,4 @@
         <a class="ml-2" href="{% url 'login' %}"> Log In Again</a>
     </small>
 </div>
-
 {% endblock content %}

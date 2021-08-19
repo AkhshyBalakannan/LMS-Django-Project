@@ -6,10 +6,7 @@ from .models import CustomUser
 class CustomUserAdmin(UserAdmin):
     list_display = (
         'username', 'email', 'first_name', 'last_name', 'is_staff',
-        'is_admin_employee', 'is_employee', 'is_manager', 'phone_number',
-        'leave_eligible', 'leave_taken', 'leave_remaining', 'lop_leave_taken',
-        'covid_leave_taken',
-    )
+        'is_manager', 'phone_number', 'leave_eligible', 'leave_remaining',)
 
     fieldsets = (
         (None, {
@@ -20,17 +17,13 @@ class CustomUserAdmin(UserAdmin):
         }),
         ('Permissions', {
             'fields': (
-                'is_active', 'is_staff', 'is_superuser',
-                'groups', 'user_permissions'
-            )
+                'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
         }),
         ('Important dates', {
             'fields': ('last_login', 'date_joined')
         }),
         ('Additional info', {
-            'fields': ('is_admin_employee', 'is_employee', 'is_manager', 'leave_eligible',
-                       'leave_taken', 'leave_remaining', 'lop_leave_taken',
-                       'covid_leave_taken',)
+            'fields': ('is_manager', 'report_to', 'leave_eligible', 'leave_remaining',)
         })
     )
 
@@ -43,17 +36,13 @@ class CustomUserAdmin(UserAdmin):
         }),
         ('Permissions', {
             'fields': (
-                'is_active', 'is_staff', 'is_superuser',
-                'groups', 'user_permissions'
-            )
+                'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
         }),
         ('Important dates', {
             'fields': ('last_login', 'date_joined')
         }),
         ('Additional info', {
-            'fields': ('is_admin_employee', 'is_employee', 'is_manager', 'leave_eligible',
-                       'leave_taken', 'leave_remaining', 'lop_leave_taken',
-                       'covid_leave_taken',)
+            'fields': ('is_manager', 'report_to', 'leave_eligible', 'leave_remaining',)
         })
     )
 

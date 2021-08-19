@@ -1,5 +1,4 @@
 {% extends 'base\base.html' %}
-{% load crispy_forms_tags %}
 {% block content %}
 <div class="container">
     <ul class="list-group list-group-horizontal-xxl mb-3">
@@ -32,27 +31,41 @@
                 <div class="row my-1">
                     <div class=" col"><b>Leave type</b></div>
                     <div class="col"><b>Leave Eligible</b></div>
-                    <div class="col"><b>Leave Taken</b></div>
-                    <div class="col"><b>Leave Remaining</b></div>
+                    <div class="col"><b>No. Leaves taken</b></div>
+                    <div class="col"><b>No. Leave Remaining</b></div>
                 </div>
                 <hr class="my-1">
                 <div class="row">
-                    <div class="col">Presonal Leave</div>
+                    <div class="col"><b>Overall Leaves</b></div>
                     <div class="col">{{ user.leave_eligible }}</div>
-                    <div class="col">{{ user.leave_taken }}</div>
+                    {% ifequal leave_count.total None %}
+                    <div class="col">0</div>
+                    {% else %}
+                    <div class="col">{{ leave_count.total }}</div>
+                    {% endifequal %}
                     <div class="col">{{ user.leave_remaining }}</div>
                 </div>
+
                 <div class="row">
-                    <div class="col">LOP Leave</div>
+                    <div class="col"><b>LOP Leaves</b></div>
+                    <div class="col"><b>-</b></div>
+                    {% ifequal lop_count.total None %}
                     <div class="col">0</div>
-                    <div class="col">{{ user.lop_leave_taken }}</div>
-                    <div class="col">0</div>
+                    {% else %}
+                    <div class="col">{{ lop_count.total }}</div>
+                    {% endifequal %}
+                    <div class="col"><b>-</b></div>
                 </div>
+
                 <div class="row">
-                    <div class="col">Covid Support</div>
+                    <div class="col"><b>Other Leaves</b></div>
+                    <div class="col"><b>-</b></div>
+                    {% ifequal other_leave_count.total None %}
                     <div class="col">0</div>
-                    <div class="col">{{ user.covid_leave_taken }}</div>
-                    <div class="col">0</div>
+                    {% else %}
+                    <div class="col">{{ other_leave_count.total }}</div>
+                    {% endifequal %}
+                    <div class="col"><b>-</b></div>
                 </div>
             </div>
         </li>

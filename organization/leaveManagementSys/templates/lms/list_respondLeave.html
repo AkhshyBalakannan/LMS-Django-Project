@@ -23,9 +23,6 @@
             <hr class="my-1">
 
             {% for data in datas %}
-            {% if data.applied_user.is_manager %}
-            {{ continue }}
-            {% else %}
             <div class="row">
                 <div class="col-md-3">
                     {{ data.applied_user.first_name }} {{ data.applied_user.last_name }}
@@ -55,10 +52,8 @@
                 </div>
             </div>
             <hr class="my-1">
-            {% endif %}
             {% endfor %}
             {% endif %}
-            <div class="d-flex justify-content-center">End of Records</div>
         </div>
     </li>
 </ul>

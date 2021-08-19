@@ -56,8 +56,9 @@
 <ul class="list-group list-group-horizontal-xxl mb-2">
     <li class="list-group-item">
         {% ifequal data.status "Pending" %}
-        <form action="{% url 'update-leave-respond' data.id %}" method="POST" class="needs-validation" novalidate>
+        <form action="{% url 'detail-leave-respond' data.id %}" method="POST" class="needs-validation" novalidate>
             {% csrf_token %}
+            {{ form }}
             <div class="row">
                 <div class="col div_id_remark">
                     <label for="id_remark" class="form-label"><b>Leave Remark</b></label>
