@@ -4,6 +4,7 @@ from .models import CustomUser
 
 
 class CustomUserAdmin(UserAdmin):
+    '''Display in Admin Page'''
     list_display = (
         'username', 'email', 'first_name', 'last_name', 'is_staff',
         'is_manager', 'phone_number', 'leave_eligible', 'leave_remaining',)

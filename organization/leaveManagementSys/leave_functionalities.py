@@ -8,12 +8,14 @@ from django.db.models import Sum
 
 
 def save_leave_form(form, user):
+    '''Save Leave Request with User detail'''
     leave = form.save(commit=False)
     leave.applied_user = user
     leave.save()
 
 
 def date_validation(future_date):
+    '''Date Validations Leave Request form'''
     validation_from_date = datetime.date.today()
     validation_to_date = validation_from_date+relativedelta.relativedelta(
         months=future_date)
@@ -21,6 +23,7 @@ def date_validation(future_date):
 
 
 def date_range_exists(from_date, to_date, request):
+    '''Validation for leave existing'''
     to_store_dates = pd.date_range(from_date, to_date, freq='d').date
     count = 0
     for i in to_store_dates:
@@ -38,6 +41,7 @@ def date_range_exists(from_date, to_date, request):
 
 
 def leave_details(user):
+    '''Leave Profile with leave details'''
     datas = LeaveRequest.objects.filter(applied_user=user
                                         ).order_by('-from_date')
     leave_count = user.leaverequest_set.filter(
@@ -52,6 +56,7 @@ def leave_details(user):
 
 
 def leave_respond(form, leave_id):
+    '''Respond Leave and backend work'''
     LeaveRequest.objects.filter(id=leave_id).update(
         remark=form['remark'], status=form['status'])
     leave = LeaveRequest.objects.filter(id=leave_id).first()

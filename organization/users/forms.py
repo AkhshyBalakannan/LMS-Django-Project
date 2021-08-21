@@ -6,20 +6,21 @@ from django.contrib.auth.models import Group
 
 
 class UserRegisterForm(UserCreationForm):
+    '''Custom User registeration form'''
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    group = forms.ModelChoiceField(queryset=Group.objects.all(), required=True)
     report_to = forms.ModelChoiceField(
         queryset=CustomUser.objects.filter(is_manager=True), required=True)
 
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'password1',
-                  'password2', 'profile_pic', 'address', 'group', 'is_manager', 'report_to', ]
+                  'password2', 'profile_pic', 'address', 'is_manager', 'report_to', ]
 
 
 class UserSelectUpdateForm(ModelForm):
+    '''Get instance of users'''
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -28,11 +29,11 @@ class UserSelectUpdateForm(ModelForm):
 
 
 class UserUpdationForm(ModelForm):
-    group = forms.ModelChoiceField(queryset=Group.objects.all())
+    '''Updation form for custom user'''
     report_to = forms.ModelChoiceField(
         queryset=CustomUser.objects.filter(is_manager=True), required=True)
 
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'phone_number',
-                  'address', 'group', 'is_manager', 'report_to', ]
+                  'address', 'is_manager', 'report_to', ]

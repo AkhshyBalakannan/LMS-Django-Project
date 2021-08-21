@@ -4,6 +4,7 @@ from .leave_functionalities import date_validation
 
 
 class LeaveRequestForm(forms.ModelForm):
+    '''Leave Request Form'''
     min, max = date_validation(4)
     LEAVE_OPTIONS = (
         ('personal', 'Personal'),
@@ -19,11 +20,13 @@ class LeaveRequestForm(forms.ModelForm):
         required=True, widget=forms.TextInput(attrs={'class': 'mt-1 mb-2', }))
 
     class Meta:
+        '''Let Django Know what fields are needed'''
         model = LeaveRequest
         fields = ['from_date', 'to_date', 'leave_type', 'description']
         exclude = ['applied_user', 'status', 'remark', 'number_of_days']
 
     def clean(self):
+        '''Server Side Validations'''
         cleaned_data = super().clean()
         from_date = cleaned_data.get('from_date')
         to_date = cleaned_data.get('to_date')
@@ -32,19 +35,23 @@ class LeaveRequestForm(forms.ModelForm):
 
 
 class LeaveCancelForm(forms.ModelForm):
+    '''Leave Cancel Form'''
     id = forms.IntegerField(required=True)
 
     class Meta:
+        '''Let Django Know what fields are needed'''
         model = LeaveRequest
         fields = ['id', 'status']
 
     def clean(self):
+        '''Server Side Validations'''
         cleaned_data = super().clean()
         if not type(cleaned_data.get('id')) == int:
             raise forms.ValidationError('Invalid form entry')
 
 
 class LeaveRespondForm(forms.ModelForm):
+    '''Leave Respond Form'''
     OPTIONS = (
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
@@ -54,5 +61,6 @@ class LeaveRespondForm(forms.ModelForm):
         required=True, choices=OPTIONS)
 
     class Meta:
+        '''Let Django Know what fields are needed'''
         model = LeaveRequest
         fields = ['remark', 'status']

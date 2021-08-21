@@ -57,3 +57,7 @@ footer {
     text-decoration: none;
     text-align:inherit;
 }
+
+.home-card-width{
+    width: 22rem;
+}

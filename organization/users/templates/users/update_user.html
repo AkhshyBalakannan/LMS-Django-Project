@@ -1,7 +1,9 @@
 {% extends 'base\base.html' %}
 {% load static %}
+{% load has_group %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% if user|has_group:"Adminstrator" %}
 <div class="content-section">
     <div class="container">
         <div class="card signup-card">
@@ -20,4 +22,16 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="content-section">
+    <div class="container">
+        <div class="card signup-card">
+            <div class="card-body">
+                <h2 class="d-flex justify-content-center">YOU DON'T HAVE PERMISSION</h2>
+                <a class="d-flex justify-content-center btn btn-danger" href="{%  url 'home' %}">BACK TO HOME</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock content %}

@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 @login_required
 def request_leave(request):
+    '''Request Leave'''
     form = LeaveRequestForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
@@ -28,12 +29,14 @@ def request_leave(request):
 
 
 class ViewListCancelRequest(LoginRequiredMixin, ListView):
+    '''List View for leave Cancel'''
     model = LeaveRequest
     template_name = 'lms/cancelLeave.html'
     context_object_name = 'datas'
     paginate_by = 5
 
     def get_queryset(self):
+        '''Get method'''
         return LeaveRequest.objects.filter(applied_user=self.request.user).order_by('-from_date')
 
     def post(self, form):
@@ -46,6 +49,7 @@ class ViewListCancelRequest(LoginRequiredMixin, ListView):
 
 
 class ViewListLeaveRequest(LoginRequiredMixin, ListView):
+    '''List View for Leave Requests for manager'''
     model = LeaveRequest
     template_name = 'lms/list_respondLeave.html'
     context_object_name = 'datas'
@@ -57,6 +61,7 @@ class ViewListLeaveRequest(LoginRequiredMixin, ListView):
 
 
 class ViewDetailLeaveRequest(LoginRequiredMixin, DetailView):
+    '''Detailed View for leave Requests for manager'''
     model = LeaveRequest
     template_name = 'lms/detail_respondLeave.html'
     context_object_name = 'data'
@@ -71,6 +76,7 @@ class ViewDetailLeaveRequest(LoginRequiredMixin, DetailView):
 
 
 class ViewListUserLeaves(LoginRequiredMixin, ListView):
+    '''List view of leave made by user'''
     model = LeaveRequest
     template_name = 'lms/list_userLeave.html'
     context_object_name = 'datas'

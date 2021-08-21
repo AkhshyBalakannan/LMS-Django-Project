@@ -42,6 +42,11 @@
                     <li class="nav-item active">
                         <a href="{% url 'home' %}" class="nav-link"></i>Home</a>
                     </li>
+                    {% if user|has_group:"Adminstrator" %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'list-leave-respond' %}">Respond Leave Request</a>
+                    </li>
+                    {% else %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,31 +70,30 @@
                             <li>
                                 <hr class="dropdown-divider">
                                 {% endif %}
-                                {% if not user.is_manager %}
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'cancel-request' %}">Cancel Leave</a>
                             </li>
-                            {% endif %}
-                            {% if user.is_manager %}
-                            <li>
-                                <a class="dropdown-item disabled" href="{% url 'cancel-request' %}">Cancel Leave</a>
-                            </li>
-                            {% endif %}
+                        </ul>
                     </li>
-                </ul>
-                </li>
-                <li class="nav-item active">
-                    <a href="{% url 'user-profile' %}" class="nav-link"></i>User Profile</a>
-                </li>
-                {% if user|has_group:"Adminstrator" %}
-                <li class="nav-item active">
-                    <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
-                </li>
-                <li class="nav-item active">
-                    <a href="{% url 'select-update-user' %}" class="nav-link"></i>Update User Account</a>
-                </li>
-                {% endif %}
+                    {% endif %}
+                    {% if user|has_group:"Adminstrator" %}
+                    <li class="nav-item active">
+                        <a href="{% url 'user-profile' %}" class="nav-link"></i>Admin Profile</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item active">
+                        <a href="{% url 'user-profile' %}" class="nav-link"></i>User Profile</a>
+                    </li>
+                    {% endif %}
+                    {% if user|has_group:"Adminstrator" %}
+                    <li class="nav-item active">
+                        <a href="{% url 'register-user' %}" class="nav-link"></i>Create User Account</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{% url 'select-update-user' %}" class="nav-link"></i>Update User Account</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <form action="{% url 'logout' %}" class="d-flex">
                     <small style="padding: 0.5rem;">Welcome
@@ -110,7 +114,6 @@
         {% block content %}
         {% endblock content %}
     </div>
-
 </body>
 
 <footer>

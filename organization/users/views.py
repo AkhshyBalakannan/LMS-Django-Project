@@ -10,33 +10,39 @@ from leavemanagementsys.leave_functionalities import leave_details
 
 @login_required
 def register(request):
+    '''Register new user'''
     if request.method == 'POST':
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid() and form.save():
             messages.success(request, f'Account created successfully!')
             return redirect('home')
+        messages.warning(request, f'Invalid form')
     form = UserRegisterForm()
     return render(request, 'users/signup.html', {'form': form})
 
 
 @login_required
 def home(request):
+    '''Home page'''
     return render(request, 'users/home.html')
 
 
 @login_required
 def profile(request):
+    '''Leave profile page'''
     content = leave_details(request.user)
     return render(request, 'users/profile.html', content)
 
 
 @login_required
 def user_profile(request):
+    '''User profile page'''
     return render(request, 'users/user_profile.html')
 
 
 @login_required
 def select_update_user(request):
+    '''Selection for updations'''
     form = UserSelectUpdateForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
@@ -50,12 +56,11 @@ def select_update_user(request):
 
 @login_required
 def update_user(request, email):
+    '''Update user'''
     to_update_user = CustomUser.objects.filter(email=email).first()
     if request.method == 'POST':
         form = UserUpdationForm(request.POST, instance=to_update_user)
         if form.is_valid() and form.save():
-            to_update_user.groups.clear()
-            to_update_user.groups.add(form.cleaned_data['group'])
             return redirect('home')
     form = UserUpdationForm(instance=to_update_user)
     return render(request, 'users/update_user.html', {'form': form})
