@@ -1,15 +1,19 @@
+'''Views module for leave management sys app'''
 from django.views.generic import ListView, DetailView
-from leavemanagementsys.models import LeaveRequest
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from users.models import CustomUser
+from leavemanagementsys.models import LeaveRequest
 from .forms import LeaveCancelForm, LeaveRequestForm, LeaveRespondForm
-from .leave_functionalities import date_range_exists, leave_respond, save_leave_form
-from django.contrib.auth.mixins import LoginRequiredMixin
+from .leave_functionalities import (date_range_exists, leave_respond,
+                                    list_cancel_leave, save_leave_form)
 
+
+# pylint: disable=too-many-ancestors
 
 @login_required
 def request_leave(request):
@@ -21,9 +25,9 @@ def request_leave(request):
                                  request):
                 return HttpResponseRedirect(reverse('home'))
             save_leave_form(form, request.user)
-            messages.success(request, f'Leave requested Successfully!')
+            messages.success(request, 'Leave requested Successfully!')
             return HttpResponseRedirect(reverse('home'))
-        messages.warning(request, f'Invalid Entry!')
+        messages.warning(request, 'Invalid Entry!')
         return HttpResponseRedirect(reverse('leave-request'))
     return render(request, 'lms/requestLeave.html', {'form': form})
 
@@ -37,15 +41,17 @@ class ViewListCancelRequest(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         '''Get method'''
-        return LeaveRequest.objects.filter(applied_user=self.request.user).order_by('-from_date')
+        return list_cancel_leave(self.request.user)
 
     def post(self, form):
+        '''Post Method'''
         form = LeaveCancelForm(self.request.POST)
         if form.is_valid():
             LeaveRequest.objects.filter(
                 id=form.cleaned_data['id']).update(status='Cancel')
-            messages.success(self.request, f'Leave cancelled!')
+            messages.success(self.request, 'Leave cancelled!')
             return redirect('home')
+        return list_cancel_leave(self.request.user)
 
 
 class ViewListLeaveRequest(LoginRequiredMixin, ListView):
@@ -67,12 +73,14 @@ class ViewDetailLeaveRequest(LoginRequiredMixin, DetailView):
     context_object_name = 'data'
     paginate_by = 5
 
-    def post(self, request, pk):
+    def post(self, request, pk):  # pylint: disable=invalid-name
+        '''Post Method'''
         form = LeaveRespondForm(request.POST)
         if form.is_valid():
             leave_respond(form.cleaned_data, pk)
-            messages.success(self.request, f"Leave Responded")
+            messages.success(self.request, 'Leave Responded')
             return HttpResponseRedirect(reverse('list-leave-respond'))
+        return HttpResponseRedirect(reverse('detail-leave-respond'))
 
 
 class ViewListUserLeaves(LoginRequiredMixin, ListView):

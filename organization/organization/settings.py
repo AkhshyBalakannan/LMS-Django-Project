@@ -1,3 +1,4 @@
+'''Django Settings file'''
 import os  # this import is done for mail id and pass in env
 from pathlib import Path
 
@@ -67,18 +68,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'organization.wsgi.application'
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lmsdjangodatabase',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'lmsdjangodatabase',
+    #     'USER': 'root',
+    #     'PASSWORD': '1234',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -125,6 +126,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
+# This line tells Django that auth should be from
 AUTH_USER_MODEL = 'users.CustomUser'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

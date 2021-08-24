@@ -1,11 +1,14 @@
+'''Leave related Functions called from views forms'''
 import datetime
 from dateutil import relativedelta
 from django.contrib import messages
-from leavemanagementsys.models import LeaveRequest
-import pandas as pd
-from .models import LeaveDates
 from django.db.models import Sum
+import pandas as pd
+from leavemanagementsys.models import LeaveRequest
+from .models import LeaveDates
 
+
+# pylint: disable=no-member
 
 def save_leave_form(form, user):
     '''Save Leave Request with User detail'''
@@ -14,30 +17,17 @@ def save_leave_form(form, user):
     leave.save()
 
 
+def list_cancel_leave(user):
+    '''Cancel Leave request list'''
+    return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')
+
+
 def date_validation(future_date):
     '''Date Validations Leave Request form'''
     validation_from_date = datetime.date.today()
     validation_to_date = validation_from_date+relativedelta.relativedelta(
         months=future_date)
     return validation_from_date, validation_to_date
-
-
-def date_range_exists(from_date, to_date, request):
-    '''Validation for leave existing'''
-    to_store_dates = pd.date_range(from_date, to_date, freq='d').date
-    count = 0
-    for i in to_store_dates:
-        dates, created = LeaveDates.objects.get_or_create(
-            applied_user=request.user, dates=i)
-        if not created:
-            for i in to_store_dates:
-                while count:
-                    LeaveDates.objects.filter(dates=i).delete()
-                    break
-                count -= 1
-            messages.warning(request, f'Leave already exists')
-            return True
-        count += 1
 
 
 def leave_details(user):
@@ -52,14 +42,37 @@ def leave_details(user):
         leave_type__in=['personal', 'lop']).aggregate(total=Sum('number_of_days'))
     return {'datas': datas, 'lop_count': lop_count,
             'other_leave_count': other_leave_count,
-            'leave_count': leave_count, }
+            'leave_count': leave_count,
+            'title': 'Leave Profile'}
+
+
+def date_range_exists(from_date, to_date, request):
+    '''Validation for leave existing'''
+    to_store_dates = pd.date_range(from_date, to_date, freq='d')
+    count = 0
+    for store_date in to_store_dates:
+        # pylint: disable=unused-variable
+        dates, created = LeaveDates.objects.get_or_create(
+            applied_user=request.user, dates=store_date)
+        if not created:
+            for exist_date in to_store_dates:
+                while count:
+                    LeaveDates.objects.filter(
+                        dates=exist_date).delete()
+                    break
+                count -= 1
+            messages.warning(request, 'Leave already exists')
+            return True
+        count += 1
+    return False
 
 
 def leave_respond(form, leave_id):
     '''Respond Leave and backend work'''
     LeaveRequest.objects.filter(id=leave_id).update(
         remark=form['remark'], status=form['status'])
-    leave = LeaveRequest.objects.filter(id=leave_id).first()
+    leave = LeaveRequest.objects.filter(
+        id=leave_id).first()
     user_with_leave = leave.applied_user
     leave = LeaveRequest.objects.filter(
         id=leave_id).filter(leave_type='personal', status='Approved').first()

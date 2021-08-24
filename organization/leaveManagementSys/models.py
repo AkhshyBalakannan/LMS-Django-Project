@@ -1,3 +1,4 @@
+'''leave Management System Models'''
 from django.db import models
 from django.utils import timezone
 from users.models import CustomUser
@@ -10,6 +11,7 @@ LEAVE_TYPE = (
 
 
 class LeaveRequest(models.Model):
+    '''Request or create a leave'''
     applied_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField()
     from_date = models.DateField(default=timezone.now)
@@ -29,6 +31,7 @@ class LeaveRequest(models.Model):
 
 
 class LeaveDates(models.Model):
+    '''Create Leave dates'''
     applied_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     dates = models.DateField()
 

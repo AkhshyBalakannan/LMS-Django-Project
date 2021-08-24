@@ -1,8 +1,11 @@
-from django.forms.models import ModelForm
-from users.models import CustomUser
+'''Custom User forms create/update form'''
 from django import forms
+from django.forms.models import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group
+from users.models import CustomUser
+
+# pylint: disable=too-few-public-methods
+# pylint: disable=missing-class-docstring
 
 
 class UserRegisterForm(UserCreationForm):

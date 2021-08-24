@@ -1,6 +1,9 @@
+'''Leave Request form create/update form'''
 from django import forms
 from leavemanagementsys.models import LeaveRequest
 from .leave_functionalities import date_validation
+
+# pylint: disable=too-few-public-methods
 
 
 class LeaveRequestForm(forms.ModelForm):
@@ -46,7 +49,7 @@ class LeaveCancelForm(forms.ModelForm):
     def clean(self):
         '''Server Side Validations'''
         cleaned_data = super().clean()
-        if not type(cleaned_data.get('id')) == int:
+        if not isinstance(cleaned_data.get('id')) == int:
             raise forms.ValidationError('Invalid form entry')
 
 
