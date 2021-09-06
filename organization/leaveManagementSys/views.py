@@ -10,7 +10,7 @@ from users.models import CustomUser
 from leavemanagementsys.models import LeaveRequest
 from .forms import LeaveCancelForm, LeaveRequestForm, LeaveRespondForm
 from .leave_functionalities import (date_range_exists, leave_respond,
-                                    list_cancel_leave, save_leave_form)
+                                    list_cancel_leave, leave_form_save)
 
 
 # pylint: disable=too-many-ancestors
@@ -24,7 +24,7 @@ def request_leave(request):
             if date_range_exists(form.cleaned_data['from_date'], form.cleaned_data['to_date'],
                                  request):
                 return HttpResponseRedirect(reverse('home'))
-            save_leave_form(form, request.user)
+            leave_form_save(form, request.user)
             messages.success(request, 'Leave requested Successfully!')
             return HttpResponseRedirect(reverse('home'))
         messages.warning(request, 'Invalid Entry!')

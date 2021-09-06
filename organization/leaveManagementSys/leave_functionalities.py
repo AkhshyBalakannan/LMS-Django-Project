@@ -9,8 +9,10 @@ from .models import LeaveDates
 
 
 # pylint: disable=no-member
+# pylint: disable=unused-variable
 
-def save_leave_form(form, user):
+
+def leave_form_save(form, user):
     '''Save Leave Request with User detail'''
     leave = form.save(commit=False)
     leave.applied_user = user
@@ -51,7 +53,6 @@ def date_range_exists(from_date, to_date, request):
     to_store_dates = pd.date_range(from_date, to_date, freq='d')
     count = 0
     for store_date in to_store_dates:
-        # pylint: disable=unused-variable
         dates, created = LeaveDates.objects.get_or_create(
             applied_user=request.user, dates=store_date)
         if not created:
@@ -75,11 +76,11 @@ def leave_respond(form, leave_id):
         id=leave_id).first()
     user_with_leave = leave.applied_user
     leave = LeaveRequest.objects.filter(
-        id=leave_id).filter(leave_type='personal', status='Approved').first()
+        id=leave_id, leave_type='personal', status='Approved').first()
     if leave:
         user_with_leave.leave_remaining -= int(leave.number_of_days)
         if user_with_leave.leave_remaining < 0:
             user_with_leave.leave_remaining = 0
             leave = LeaveRequest.objects.filter(
-                id=leave_id).filter(leave_type='personal').update(leave_type='lop')
+                id=leave_id, leave_type='personal').update(leave_type='lop')
         user_with_leave.save()

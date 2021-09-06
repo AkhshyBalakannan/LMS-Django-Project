@@ -129,6 +129,9 @@ LOGIN_URL = 'login'
 # This line tells Django that auth should be from
 AUTH_USER_MODEL = 'users.CustomUser'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 5 * 60
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True

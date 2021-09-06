@@ -19,29 +19,29 @@ def register(request):
             return redirect('home')
         messages.warning(request, 'Invalid form')
     form = UserRegisterForm()
-    content = {'form': form, 'title': 'Register'}
-    return render(request, 'users/signup.html', content)
+    context = {'form': form, 'title': 'Register'}
+    return render(request, 'users/signup.html', context)
 
 
 @login_required
 def home(request):
     '''Home page'''
-    content = {'title': 'LMS Home'}
-    return render(request, 'users/home.html', content)
+    context = {'title': 'LMS Home'}
+    return render(request, 'users/home.html', context)
 
 
 @login_required
 def profile(request):
     '''Leave profile page'''
-    content = leave_details(request.user)
-    return render(request, 'users/profile.html', content)
+    context = leave_details(request.user)
+    return render(request, 'users/profile.html', context)
 
 
 @login_required
 def user_profile(request):
     '''User profile page'''
-    content = {'title': 'User Profile'}
-    return render(request, 'users/user_profile.html', content)
+    context = {'title': 'User Profile'}
+    return render(request, 'users/user_profile.html', context)
 
 
 @login_required
@@ -55,8 +55,8 @@ def select_update_user(request):
                 messages.warning(request, 'No user found')
                 return redirect('select-update-user')
             return HttpResponseRedirect(reverse('update-user', kwargs={'email': email}))
-    content = {'form': form, 'title': 'Search User'}
-    return render(request, 'users/update_user.html', content)
+    context = {'form': form, 'title': 'Search User'}
+    return render(request, 'users/update_user.html', context)
 
 
 @login_required
@@ -68,5 +68,5 @@ def update_user(request, email):
         if form.is_valid() and form.save():
             return redirect('home')
     form = UserUpdationForm(instance=to_update_user)
-    content = {'form': form, 'title': 'Update User'}
-    return render(request, 'users/update_user.html', content)
+    context = {'form': form, 'title': 'Update User'}
+    return render(request, 'users/update_user.html', context)
