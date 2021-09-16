@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from users import views as user_views
 from leavemanagementsys import views as lms_views
+from organization import views as org_views
 
 # All views from apps are imported with app_views and used
 urlpatterns = [
@@ -22,7 +23,7 @@ urlpatterns = [
          name='list-leave-respond'),
     path('userleaveRespond/<int:pk>/', lms_views.ViewDetailLeaveRequest.as_view(),
          name='detail-leave-respond'),
-    path('userleaves/<str:user_first_name>/<int:leaverequest>/',
+    path('userleaveRespond/<str:user_first_name>/<int:leaverequest>/',
          lms_views.ViewListUserLeaves.as_view(), name='detail-user-leaves'),
     path('logout/', auth_views.LogoutView.as_view(
          template_name='registration/logout.html'), name='logout'),
@@ -41,6 +42,9 @@ urlpatterns = [
          user_views.update_user, name='update-user'),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = org_views.custom_page_not_found_view
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

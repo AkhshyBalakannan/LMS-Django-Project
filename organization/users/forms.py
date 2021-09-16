@@ -2,6 +2,7 @@
 from django import forms
 from django.forms.models import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+from django.forms.widgets import Select
 from users.models import CustomUser
 
 # pylint: disable=too-few-public-methods
@@ -33,8 +34,11 @@ class UserSelectUpdateForm(ModelForm):
 
 class UserUpdationForm(ModelForm):
     '''Updation form for custom user'''
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
     report_to = forms.ModelChoiceField(
-        queryset=CustomUser.objects.filter(is_manager=True), required=True)
+        queryset=CustomUser.objects.filter(is_manager=True), required=True, empty_label=None)
 
     class Meta:
         model = CustomUser

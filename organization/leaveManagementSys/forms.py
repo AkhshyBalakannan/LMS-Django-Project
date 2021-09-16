@@ -33,8 +33,8 @@ class LeaveRequestForm(forms.ModelForm):
         cleaned_data = super().clean()
         from_date = cleaned_data.get('from_date')
         to_date = cleaned_data.get('to_date')
-        if not (from_date <= to_date or from_date <= self.min or to_date >= self.max):
-            raise forms.ValidationError('Invalid form entry')
+        if not from_date or not to_date or not (from_date <= to_date or from_date <= self.min or to_date >= self.max):
+            raise forms.ValidationError("Invalid Entry")
 
 
 class LeaveCancelForm(forms.ModelForm):

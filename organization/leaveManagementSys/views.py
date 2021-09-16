@@ -28,7 +28,7 @@ def request_leave(request):
             messages.success(request, 'Leave requested Successfully!')
             return HttpResponseRedirect(reverse('home'))
         messages.warning(request, 'Invalid Entry!')
-        return HttpResponseRedirect(reverse('leave-request'))
+        return render(request, 'lms/requestLeave.html', {'form': form}, status=400)
     return render(request, 'lms/requestLeave.html', {'form': form})
 
 
@@ -51,6 +51,7 @@ class ViewListCancelRequest(LoginRequiredMixin, ListView):
                 id=form.cleaned_data['id']).update(status='Cancel')
             messages.success(self.request, 'Leave cancelled!')
             return redirect('home')
+        messages.warning(self.request, 'Invalid try')
         return list_cancel_leave(self.request.user)
 
 
@@ -62,8 +63,7 @@ class ViewListLeaveRequest(LoginRequiredMixin, ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return LeaveRequest.objects.filter(
-            applied_user__report_to=self.request.user).order_by('-from_date')
+        return LeaveRequest.objects.filter(applied_user__report_to=self.request.user).order_by('-from_date')
 
 
 class ViewDetailLeaveRequest(LoginRequiredMixin, DetailView):
@@ -93,4 +93,5 @@ class ViewListUserLeaves(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = get_object_or_404(CustomUser,
                                  first_name=self.kwargs.get('user_first_name'))
-        return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')
+        if user:
+            return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')

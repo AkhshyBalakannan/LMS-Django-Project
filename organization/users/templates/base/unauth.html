@@ -1,0 +1,14 @@
+{% extends 'base\base.html' %}
+{% load static %}
+{% block content %}
+<div class="content-section">
+    <div class="container">
+        <div class="card signup-card">
+            <div class="card-body">
+                <h2 class="d-flex justify-content-center">YOU DON'T HAVE PERMISSION</h2>
+                <a class="d-flex justify-content-center btn btn-danger" href="{%  url 'home' %}">BACK TO HOME</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

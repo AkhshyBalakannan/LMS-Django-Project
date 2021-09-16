@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     '''Custom User with partial field of user class'''
     is_manager = models.BooleanField(default=False)
-    phone_number = models.CharField(max_length=10, default=1234567890)
+    phone_number = models.IntegerField(default=1234567890)
     profile_pic = models.ImageField(
         upload_to='profile_pic/', default='default.jpg')
     address = models.CharField(

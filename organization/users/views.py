@@ -1,4 +1,5 @@
 '''Views module for user app'''
+from os import stat
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
@@ -48,25 +49,27 @@ def user_profile(request):
 def select_update_user(request):
     '''Selection for updations'''
     form = UserSelectUpdateForm(request.POST or None)
+    context = {'form': form, 'title': 'Search User'}
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data['email']
             if not CustomUser.objects.filter(email=email).first():
                 messages.warning(request, 'No user found')
-                return redirect('select-update-user')
+                return render(request, 'users/update_user.html', context, status=404)
             return HttpResponseRedirect(reverse('update-user', kwargs={'email': email}))
-    context = {'form': form, 'title': 'Search User'}
     return render(request, 'users/update_user.html', context)
 
 
 @login_required
 def update_user(request, email):
     '''Update user'''
+
     to_update_user = CustomUser.objects.filter(email=email).first()
     if request.method == 'POST':
         form = UserUpdationForm(request.POST, instance=to_update_user)
         if form.is_valid() and form.save():
             return redirect('home')
+        return render(request, 'users/update_user.html', {'form': form}, status=404)
     form = UserUpdationForm(instance=to_update_user)
     context = {'form': form, 'title': 'Update User'}
     return render(request, 'users/update_user.html', context)

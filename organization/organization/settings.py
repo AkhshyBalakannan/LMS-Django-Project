@@ -41,6 +41,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'organization.middleware.privilege_check'
+
 ]
 
 ROOT_URLCONF = 'organization.urls'
@@ -71,15 +74,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'lmsdjangodatabase',
+        # 'USER': 'root',
+        # 'PASSWORD': '1234',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306',
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'lmsdjangodatabase',
-    #     'USER': 'root',
-    #     'PASSWORD': '1234',
-    #     'HOST': 'localhost',
-    #     'PORT': '3306',
-    # }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -130,7 +132,7 @@ LOGIN_URL = 'login'
 AUTH_USER_MODEL = 'users.CustomUser'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 5 * 60
+SESSION_COOKIE_AGE = 15 * 60
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
