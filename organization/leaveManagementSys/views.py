@@ -27,7 +27,6 @@ def request_leave(request):
             leave_form_save(form, request.user)
             messages.success(request, 'Leave requested Successfully!')
             return HttpResponseRedirect(reverse('home'))
-        messages.warning(request, 'Invalid Entry!')
         return render(request, 'lms/requestLeave.html', {'form': form}, status=400)
     return render(request, 'lms/requestLeave.html', {'form': form})
 
@@ -93,5 +92,35 @@ class ViewListUserLeaves(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = get_object_or_404(CustomUser,
                                  first_name=self.kwargs.get('user_first_name'))
+        if user:
+            return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')
+
+
+@login_required
+def search_employee(request):
+    '''search employee'''
+    if request.method == 'POST':
+        employee = CustomUser.objects.filter(
+            email=request.POST.get('employee_email')).first()
+        if employee == None:
+            messages.warning(request, "No User Found")
+            return render(request, 'lms/search_employee.html', {'title': 'Search Employee'}, status=404)
+        elif request.user.groups.filter(name='Adminstrator').exists() or not employee.is_manager:
+            return redirect('employee-leaves', request.POST.get('employee_email'))
+        messages.warning(request, "You have no permission")
+        return render(request, 'lms/search_employee.html', {'title': 'Search Employee'}, status=401)
+    return render(request, 'lms/search_employee.html', {'title': 'Search Employee'})
+
+
+class ViewListEmployeeLeaves(LoginRequiredMixin, ListView):
+    '''List view of leave made by user'''
+    model = LeaveRequest
+    template_name = 'lms/employee_leave_details.html'
+    context_object_name = 'datas'
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = get_object_or_404(CustomUser,
+                                 email=self.kwargs.get('user_email_id'))
         if user:
             return LeaveRequest.objects.filter(applied_user=user).order_by('-from_date')

@@ -2,7 +2,6 @@
 from django import forms
 from django.forms.models import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from django.forms.widgets import Select
 from users.models import CustomUser
 
 # pylint: disable=too-few-public-methods

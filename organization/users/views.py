@@ -34,7 +34,7 @@ def home(request):
 @login_required
 def profile(request):
     '''Leave profile page'''
-    context = leave_details(request.user)
+    context = leave_details(request, request.user)
     return render(request, 'users/profile.html', context)
 
 

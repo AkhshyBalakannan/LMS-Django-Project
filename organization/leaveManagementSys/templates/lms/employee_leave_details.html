@@ -1,0 +1,103 @@
+{% extends 'base\base.html' %}
+{% load static %}
+{% load has_group %}
+{% block content %}
+{% if datas %}
+<ul class="list-group list-group-horizontal-xxl mb-2">
+    <li class="list-group-item">
+        <div>
+            <p class="my-1 row">
+                <b>
+                    {% for data in datas|slice:":1" %}
+                    <b>{{ data.applied_user.first_name }} {{ data.applied_user.last_name }}'s Leave Details</b>
+                    {% endfor %}
+                </b>
+            </p>
+            <hr class="my-1">
+            <div class="row mb-1">
+                <div class="col"><b>From Date</b></div>
+                <div class="col"><b>To Date</b></div>
+                <div class="col"><b>No. of days</b></div>
+                <div class="col"><b>Leave Type</b></div>
+                <div class="col"><b>Description</b></div>
+                <div class="col"><b>Remark</b></div>
+                <div class="col list-respond-leave"><b>Status</b></div>
+            </div>
+            <hr class="my-1">
+            {% for data in datas %}
+            <div class="row">
+                <div class="col">{{ data.from_date }}</div>
+                <div class="col">{{ data.to_date }}</div>
+                <div class="col">{{ data.number_of_days }}</div>
+                <div class="col">{{ data.leave_type }}</div>
+                <div class="col">{{ data.description }}</div>
+                <div class="col">{{ data.remark }}</div>
+                {% if data.status == "Approved" %}
+                <div class="col status-approve">
+                    Leave Approved
+                </div>
+                {% elif data.status == "Cancel" %}
+                <div class="col status-cancel">
+                    Leave Cancelled
+                </div>
+                {% elif data.status == "Reject" %}
+                <div class="col status-reject">
+                    Leave Rejected
+                </div>
+                {% else %}
+                <div class="col status-pending">
+                    {% if user|has_group:"Adminstrator" %}
+                    <a class="anchor-tag-reset" href="{% url 'detail-leave-respond' data.id %}">
+                        Pending
+                    </a>
+                    {% else %}
+                    Pending
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <hr class="my-1">
+            {% endfor %}
+        </div>
+    </li>
+</ul>
+{% else %}
+<div class="row mb-1">
+    <p>No Leave Request available</p>
+</div>
+{% endif %}
+{% if is_paginated %}
+<ul class="list-group list-group-horizontal-xxl mb-2">
+    <li class="list-group-item">
+        <div class="d-flex justify-content-evenly">
+            <div class="d-inline">
+                {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn btn-outline-dark">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-dark">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+
+                {% if num == page_obj.number %}
+                <a href="?page={{ num }}" class="btn btn-dark">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-2' and num > page_obj.number|add:'2' %}
+                <a href="?page={{ num }}" class="btn btn-outline-dark">{{ num }}</a>
+                {% endif %}
+
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a class="btn btn-outline-dark" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-dark" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
+        </div>
+    </li>
+</ul>
+{% endif %}
+<div class="d-flex justify-content-evenly">
+    <div class="px-1">
+        <a href="{% url 'home' %}" class="btn btn-outline-dark">Back to HOME</a>
+    </div>
+</div>
+{% endblock content %}

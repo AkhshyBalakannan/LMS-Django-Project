@@ -14,7 +14,7 @@ def privilege_check(get_response):
                 if not request.user.groups.filter(name='Adminstrator').exists():
                     return render(request, 'base/unauth.html', status=401)
 
-            elif link == '/leaveRespond/' or not link.find('userleaveRespond') == -1:
+            elif link in ('/leaveRespond/', '/employeeleave/') or not link.find('userleaveRespond') == -1:
                 if not request.user.is_manager:
                     return render(request, 'base/unauth.html', status=401)
         return response

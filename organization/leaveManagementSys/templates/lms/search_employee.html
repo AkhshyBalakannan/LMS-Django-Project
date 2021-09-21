@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <div class="container">
+        <div class="card signup-card leaverequest-card">
+            <div class="card-body">
+                <form class="needs-validation" method="POST" novalidate>
+                    {% csrf_token %}
+                    <legend class="border-bottom mb-4">Search Employee</legend>
+                    <div class="input-group mb-4">
+                        <span class="input-group-text">Employee's Email ID</span>
+                        <input name="employee_email" type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group d-flex justify-content-center">
+                        <div class="px-1">
+                            <button class="btn btn-outline-success " id="submitbutton" type="submit">Submit</button>
+                        </div>
+                        <div class="px-1">
+                            <button class="btn btn-outline-info" type="reset">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

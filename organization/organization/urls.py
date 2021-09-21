@@ -25,6 +25,9 @@ urlpatterns = [
          name='detail-leave-respond'),
     path('userleaveRespond/<str:user_first_name>/<int:leaverequest>/',
          lms_views.ViewListUserLeaves.as_view(), name='detail-user-leaves'),
+    path('employeeleave/', lms_views.search_employee, name='search-employee'),
+    path('userleaveRespond/<str:user_email_id>/',
+         lms_views.ViewListEmployeeLeaves.as_view(), name='employee-leaves'),
     path('logout/', auth_views.LogoutView.as_view(
          template_name='registration/logout.html'), name='logout'),
     path('reset-mypass/', auth_views.PasswordResetView.as_view(

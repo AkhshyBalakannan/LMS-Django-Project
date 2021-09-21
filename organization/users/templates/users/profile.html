@@ -26,7 +26,7 @@
     <ul class="list-group list-group-horizontal-xxl mb-2">
         <li class="list-group-item">
             <div>
-                <p class="my-1"> <b>Leave Summary</b> </p>
+                <h5 class="my-1"> <b>LEAVE SUMMARY</b> </h5>
                 <hr class="my-1">
                 <div class="row my-1">
                     <div class=" col"><b>Leave type</b></div>
@@ -36,12 +36,12 @@
                 </div>
                 <hr class="my-1">
                 <div class="row">
-                    <div class="col"><b>Overall Leaves</b></div>
+                    <div class="col"><b>Personal Leave</b></div>
                     <div class="col">{{ user.leave_eligible }}</div>
-                    {% ifequal leave_count.total None %}
+                    {% ifequal personal_leave.total None %}
                     <div class="col">0</div>
                     {% else %}
-                    <div class="col">{{ leave_count.total }}</div>
+                    <div class="col">{{ personal_leave.total }}</div>
                     {% endifequal %}
                     <div class="col">{{ user.leave_remaining }}</div>
                 </div>
@@ -64,6 +64,17 @@
                     <div class="col">0</div>
                     {% else %}
                     <div class="col">{{ other_leave_count.total }}</div>
+                    {% endifequal %}
+                    <div class="col"><b>-</b></div>
+                </div>
+
+                <div class="row">
+                    <div class="col"><b>Overall Leaves</b></div>
+                    <div class="col"><b>-</b></div>
+                    {% ifequal leave_count.total None %}
+                    <div class="col">0</div>
+                    {% else %}
+                    <div class="col">{{ leave_count.total }}</div>
                     {% endifequal %}
                     <div class="col"><b>-</b></div>
                 </div>
@@ -135,6 +146,35 @@
                 {% if page_obj.has_next %}
                 <a class="btn btn-outline-dark" href="?page={{ page_obj.next_page_number }}">Next</a>
                 <a class="btn btn-outline-dark" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
+        </div>
+    </li>
+</ul>
+{% endif %}
+{% if datas.has_other_pages %}
+<ul class="list-group list-group-horizontal-xxl mb-2">
+    <li class="list-group-item">
+        <div class="d-flex justify-content-evenly">
+            <div class="d-inline">
+                {% if datas.has_previous %}
+                <a href="?page=1" class="btn btn-outline-dark">First</a>
+                <a href="?page={{ datas.previous_page_number }}" class="btn btn-outline-dark">Previous</a>
+                {% endif %}
+
+                {% for num in datas.paginator.page_range %}
+
+                {% if num == datas.number %}
+                <a href="?page={{ num }}" class="btn btn-dark">{{ num }}</a>
+                {% elif num > datas.number|add:'-2' and num > datas.number|add:'2' %}
+                <a href="?page={{ num }}" class="btn btn-outline-dark">{{ num }}</a>
+                {% endif %}
+
+                {% endfor %}
+
+                {% if datas.has_next %}
+                <a class="btn btn-outline-dark" href="?page={{ datas.next_page_number }}">Next</a>
+                <a class="btn btn-outline-dark" href="?page={{ datas.paginator.num_pages }}">Last</a>
                 {% endif %}
             </div>
         </div>
